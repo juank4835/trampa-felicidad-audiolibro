@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- usabilidad-v1 -->
+<script>(function(){try{var d=document.documentElement;var t=localStorage.getItem('ui:theme')||'sepia';if(t!=='oscuro')d.setAttribute('data-theme',t);var f=localStorage.getItem('ui:fontscale');if(f)d.style.setProperty('--font-scale',f);var a=localStorage.getItem('ui:ajas');if(a==='on')d.setAttribute('data-ajas','on');}catch(e){}})();</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>El agujero negro del control — La trampa de la felicidad</title>
+<style>
+:root {
+  --bg: #1c1c1c;
+  --surface: #262626;
+  --ink: #ebe9e4;
+  --ink-soft: #9a988f;
+  --rule: #3a3a38;
+  --verde: #FF7A18;
+  --rojo: #8A8A86;
+  --font-body: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: calc(19px * var(--font-scale, 1)); -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); line-height: 1.75; font-feature-settings: 'kern' 1, 'liga' 1, 'onum' 1; position: relative; overflow-x: hidden; }
+/* Glow difuminado naranja detrás de la cabecera (se desvanece al bajar) */
+body::before { content: ""; position: absolute; top: -120px; left: 50%; transform: translateX(-50%); width: 900px; max-width: 130vw; height: 720px; background: radial-gradient(ellipse 50% 50% at center, rgba(255,122,24,0.20) 0%, rgba(255,122,24,0.06) 38%, transparent 70%); pointer-events: none; z-index: 0; }
+.nav-top, .page, .audio-pill { position: relative; z-index: 1; }
+.page { max-width: 720px; margin: 0 auto; padding: 5rem 1.5rem 8rem; }
+.chapter-eyebrow { font-size: 0.78rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--verde); text-align: center; margin-bottom: 1.2rem; }
+.chapter-title { font-size: 2.6rem; font-weight: 400; text-align: center; line-height: 1.15; letter-spacing: -0.01em; margin-bottom: 0.6rem; }
+.chapter-subtitle { text-align: center; font-size: 1.1rem; font-style: italic; color: var(--ink-soft); margin-bottom: 4rem; }
+.ornament { text-align: center; color: var(--verde); font-size: 1.2rem; margin: 0 auto 3.5rem; letter-spacing: 0.5em; }
+.prose p { font-size: 1.12rem; line-height: 1.8; margin-bottom: 1.5rem; }
+.prose p.lead { font-size: 1.28rem; line-height: 1.7; color: var(--ink); margin-bottom: 1.8rem; }
+.prose .lead::first-letter { font-size: 3.6rem; font-weight: 600; float: left; line-height: 0.82; margin: 0.08em 0.12em -0.1em 0; color: var(--verde); }
+.prose em { font-style: italic; }
+.prose strong { font-weight: 600; color: var(--ink); }
+.term-verde { color: var(--verde); font-style: italic; }
+.term-rojo { color: var(--rojo); font-style: italic; }
+.section-num { display: block; font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--verde); margin-bottom: 0.6rem; margin-top: 3.5rem; }
+blockquote { margin: 2.2rem 0; padding: 0.3rem 0 0.3rem 1.5rem; border-left: 2px solid var(--verde); font-style: italic; color: var(--ink-soft); font-size: 1.06rem; line-height: 1.65; }
+blockquote .cite { display: block; margin-top: 0.6rem; font-style: italic; font-size: 0.86rem; color: var(--ink-soft); opacity: 0.8; }
+blockquote .cite::before { content: "— "; }
+.cita-autor { background: var(--surface); margin: 2.4rem 0; padding: 1.8rem 2rem; border-radius: 4px; font-size: 1.06rem; line-height: 1.65; }
+.cita-autor .texto { display: block; font-style: italic; }
+.cita-autor .atribucion { display: block; margin-top: 1rem; text-align: right; font-size: 0.86rem; color: var(--ink-soft); letter-spacing: 0.02em; }
+.cita-autor .atribucion em { font-style: italic; }
+.profundizacion { margin: 2.8rem 0; padding: 1.6rem 1.8rem; background: var(--surface); border-radius: 6px; border: 1px solid var(--rule); }
+.profundizacion .tag { display: block; font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 0.8rem; }
+.profundizacion p { font-size: 1rem; line-height: 1.7; color: var(--ink-soft); margin-bottom: 0.8rem; }
+.profundizacion p:last-child { margin-bottom: 0; }
+.pendiente { margin: 2.5rem 0; padding: 1.4rem 1.6rem; border: 1px dashed var(--rule); border-radius: 6px; font-style: italic; color: var(--ink-soft); font-size: 0.98rem; text-align: center; }
+.nav-top { max-width: 720px; margin: 0 auto; padding: 1.5rem 1.5rem 0; }
+.nav-top a { font-size: 0.85rem; color: var(--ink-soft); text-decoration: none; letter-spacing: 0.04em; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+.nav-top a:hover { border-bottom-color: var(--verde); }
+.nav-foot { max-width: 720px; margin: 4rem auto 0; padding: 2rem 1.5rem 0; border-top: 1px solid var(--rule); display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.nav-foot a { font-size: 0.9rem; color: var(--ink); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color 0.2s; }
+.nav-foot a:hover { border-bottom-color: var(--verde); }
+.nav-foot .prev::before { content: "← "; color: var(--ink-soft); }
+.nav-foot .next::after { content: " →"; color: var(--ink-soft); }
+.nav-foot .idx { color: var(--ink-soft); }
+
+/* highlights MVP — instalado por tools/add_highlights.py */
+.w.hl { background-color: transparent; box-shadow: inset 0 -1.5px 0 rgba(255,238,0,0.95); padding: 0 0.5em; margin: 0 -0.5em; border-radius: 0; }
+.w.hl:hover { box-shadow: inset 0 -2.5px 0 rgba(255,238,0,1); }
+.w.activa.hl { box-shadow: inset 0 -1.5px 0 rgba(255,122,24,0.95); }
+.w.leida.hl { opacity: 1; }
+body.karaoke-off .w.hl { box-shadow: inset 0 -1.5px 0 rgba(255,238,0,0.95) !important; background-color: transparent !important; color: inherit; }
+.hl-toolbar { position: absolute; display: none; background: var(--surface); border: 1px solid var(--rule); border-radius: 6px; padding: 3px; box-shadow: 0 4px 16px -4px rgba(0,0,0,0.6); z-index: 200; font-family: var(--font-body); white-space: nowrap; -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); }
+.hl-toolbar.show { display: block; }
+.hl-btn { background: transparent; border: none; color: var(--ink); padding: 0.42rem 0.85rem; cursor: pointer; border-radius: 4px; font-family: inherit; font-size: 0.84rem; letter-spacing: 0.02em; }
+.hl-btn:hover { background: var(--rule); }
+.hl-btn-rm { color: var(--ink-soft); }
+@media (max-width: 640px) { html { font-size: calc(17px * var(--font-scale, 1)); } .page { padding: 3rem 1.2rem 5rem; } .chapter-title { font-size: 2rem; } }
+.w { cursor: pointer; transition: color 0.25s ease, background-color 0.15s ease; border-radius: 2px; }
+.w:hover { color: var(--verde); }
+.w.leida { color: var(--ink-soft); opacity: 0.85; }
+.w.activa { background-color: rgba(255,122,24,0.18); color: var(--verde); padding: 0 0.12em; }
+.g { transition: color 0.25s ease, opacity 0.25s ease; }
+.g.leida { color: var(--ink-soft); opacity: 0.85; }
+body.karaoke-off .w { cursor: text; }
+body.karaoke-off .w:hover { color: inherit; }
+body.karaoke-off .w.leida, body.karaoke-off .w.activa,
+body.karaoke-off .g.leida { color: inherit; background-color: transparent; opacity: 1; padding: 0; }
+
+/* AUDIO PILL v2 — flotante, colapsa/expande, con skip + toggle karaoke + memoria */
+.audio-pill { position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 100; display: flex; align-items: center; background: rgba(38,38,38,0.92); border: 1px solid var(--rule); border-radius: 28px; box-shadow: 0 12px 36px -14px rgba(0,0,0,0.75), 0 2px 8px -2px rgba(0,0,0,0.25); font-family: var(--font-body); height: 48px; padding: 4px; overflow: hidden; -webkit-backdrop-filter: saturate(180%) blur(20px); backdrop-filter: saturate(180%) blur(20px); transition: width 0.32s cubic-bezier(0.4,0,0.2,1), background 0.2s, box-shadow 0.2s; width: 56px; }
+.audio-pill[data-state="expanded"] { width: min(460px, calc(100vw - 2.5rem)); }
+.audio-pill:hover { box-shadow: 0 16px 40px -12px rgba(0,0,0,0.85), 0 4px 10px -2px rgba(0,0,0,0.3); }
+.ap-play { flex: 0 0 40px; height: 40px; border-radius: 50%; border: none; background: var(--verde); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: background 0.2s, transform 0.1s; }
+.ap-play:hover { background: #d96a14; transform: scale(1.04); }
+.ap-play:active { transform: scale(0.96); }
+.ap-play:focus-visible { outline: 2px solid var(--verde); outline-offset: 3px; }
+.ap-play svg { width: 16px; height: 16px; fill: currentColor; pointer-events: none; }
+.ap-icon-play { margin-left: 2px; }
+.ap-meta { display: flex; align-items: center; gap: 0.35rem; margin-left: 0.4rem; margin-right: 0.2rem; flex: 1; min-width: 0; opacity: 0; transform: translateX(-4px); transition: opacity 0.18s 0.08s, transform 0.28s cubic-bezier(0.4,0,0.2,1); }
+.audio-pill[data-state="expanded"] .ap-meta { opacity: 1; transform: translateX(0); }
+.audio-pill[data-state="collapsed"] .ap-meta { pointer-events: none; }
+.ap-btn { flex: 0 0 28px; height: 28px; border-radius: 50%; background: transparent; border: none; color: var(--ink-soft); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: background 0.2s, color 0.2s; }
+.ap-btn:hover { background: var(--rule); color: var(--ink); }
+.ap-btn:focus-visible { outline: 2px solid var(--verde); outline-offset: 2px; }
+.ap-btn svg { width: 14px; height: 14px; pointer-events: none; }
+.ap-btn.active { color: var(--verde); }
+.ap-skip svg { fill: currentColor; stroke: none; }
+.ap-skip .skip-label { font: 600 7px/1 ui-monospace, monospace; fill: currentColor; }
+.ap-karaoke svg { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.ap-karaoke .strike { display: none; }
+body.karaoke-off .ap-karaoke .strike { display: block; }
+.ap-track { flex: 1; min-width: 40px; height: 24px; position: relative; cursor: pointer; }
+.ap-rail { position: absolute; top: 50%; left: 0; right: 0; height: 2px; background: var(--rule); transform: translateY(-50%); border-radius: 1px; }
+.ap-fill { position: absolute; top: 50%; left: 0; height: 2px; width: 0; background: var(--verde); transform: translateY(-50%); border-radius: 1px; transition: width 0.1s linear; }
+.ap-thumb { position: absolute; top: 50%; left: 0; width: 10px; height: 10px; border-radius: 50%; background: var(--verde); transform: translate(-50%,-50%); opacity: 0; transition: opacity 0.2s; }
+.audio-pill:hover .ap-thumb, .ap-track:focus-visible .ap-thumb, .ap-track.dragging .ap-thumb { opacity: 1; transform: translate(-50%,-50%) scale(1.3); }
+.ap-time { font-size: 0.78rem; color: var(--ink-soft); font-variant-numeric: tabular-nums; letter-spacing: 0.01em; white-space: nowrap; min-width: 78px; text-align: right; } .ap-duration { color: var(--ink-soft); opacity: 0.75; } .ap-sep { color: var(--ink-soft); opacity: 0.6; padding: 0 0.05em; }
+.audio-pill.playing .ap-time { color: var(--verde); }
+.ap-rate { flex: 0 0 auto; background: transparent; border: 1px solid var(--rule); color: var(--ink-soft); border-radius: 12px; height: 24px; padding: 0 8px; font-size: 0.7rem; font-family: inherit; cursor: pointer; font-variant-numeric: tabular-nums; letter-spacing: 0.02em; white-space: nowrap; transition: color 0.2s, border-color 0.2s, background 0.2s; }
+.ap-rate:hover { color: var(--ink); border-color: var(--ink-soft); }
+.ap-rate:focus-visible { outline: 2px solid var(--verde); outline-offset: 2px; }
+.ap-rate.active { color: var(--verde); border-color: var(--verde); }
+.ap-close { flex: 0 0 26px; height: 26px; border-radius: 50%; background: transparent; border: none; color: var(--ink-soft); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: background 0.2s, color 0.2s; }
+.ap-close:hover { background: var(--rule); color: var(--ink); }
+.ap-close:focus-visible { outline: 2px solid var(--verde); outline-offset: 2px; }
+.ap-close svg { width: 11px; height: 11px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; pointer-events: none; }
+.audio-pill[data-state="collapsed"]::after { content: attr(data-duration); position: absolute; right: calc(100% + 10px); top: 50%; transform: translateY(-50%); background: var(--surface); border: 1px solid var(--rule); color: var(--ink-soft); padding: 0.25rem 0.6rem; border-radius: 12px; font-size: 0.72rem; font-variant-numeric: tabular-nums; letter-spacing: 0.04em; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+.audio-pill[data-state="collapsed"]:hover::after, .audio-pill[data-state="collapsed"]:focus-within::after { opacity: 1; }
+.ap-resume-hint { position: absolute; right: calc(100% + 10px); top: 50%; transform: translateY(-50%); background: var(--surface); border: 1px solid var(--verde); color: var(--verde); padding: 0.3rem 0.7rem; border-radius: 12px; font-size: 0.72rem; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.ap-resume-hint.show { opacity: 1; }
+@media (max-width: 640px) {
+  .audio-pill { right: 0.85rem; bottom: 0.85rem; }
+  .audio-pill[data-state="expanded"] { left: 0.85rem; right: 0.85rem; width: auto; }
+  .audio-pill[data-state="collapsed"]::after { display: none; }
+  .ap-karaoke { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .audio-pill, .ap-fill, .ap-play, .ap-meta { transition: none; }
+}
+
+/* ===== usabilidad-v1 ===== */
+:root[data-theme="sepia"]{ --bg:#f3ead6; --surface:#e9dcc0; --ink:#2f2718; --ink-soft:#6e6048; --rule:#d6c9ab; }
+:root[data-theme="claro"]{ --bg:#fbf9f5; --surface:#eeeae3; --ink:#1a1916; --ink-soft:#5d584f; --rule:#e2ddd3; }
+:root[data-theme="sepia"] body::before,
+:root[data-theme="claro"] body::before{ opacity:.5; }
+
+.read-progress{ position:fixed; top:0; left:0; height:3px; width:100%; background:transparent; z-index:300; pointer-events:none; }
+.read-progress > i{ display:block; height:100%; width:0; background:var(--verde); transition:width .08s linear; }
+
+.ui-settings{ position:fixed; top:14px; right:14px; z-index:260; font-family:var(--font-body); }
+.ui-gear{ width:42px; height:42px; border-radius:50%; border:1px solid var(--rule); background:var(--surface); color:var(--ink-soft); cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 16px -6px rgba(0,0,0,.5); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
+.ui-gear:hover{ color:var(--ink); }
+.ui-gear svg{ width:20px; height:20px; }
+.ui-panel{ position:absolute; top:50px; right:0; width:214px; background:var(--surface); border:1px solid var(--rule); border-radius:12px; padding:14px; box-shadow:0 12px 32px -8px rgba(0,0,0,.55); display:none; }
+.ui-panel.open{ display:block; }
+.ui-panel h4{ font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); margin:0 0 .55rem; font-weight:400; }
+.ui-row{ display:flex; gap:6px; margin-bottom:13px; }
+.ui-row:last-child{ margin-bottom:0; }
+.ui-row button{ flex:1; padding:.5rem .2rem; border:1px solid var(--rule); background:transparent; color:var(--ink-soft); border-radius:8px; cursor:pointer; font-family:var(--font-body); font-size:.9rem; line-height:1; }
+.ui-row button.active{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+
+.chapter-meta{ font-family:var(--font-body); font-size:.82rem; color:var(--ink-soft); letter-spacing:.02em; margin-top:.6rem; }
+
+.resume-read{ position:fixed; left:16px; bottom:18px; z-index:240; background:var(--surface); color:var(--ink); border:1px solid var(--rule); border-radius:22px; padding:.55rem .95rem; font-family:var(--font-body); font-size:.86rem; cursor:pointer; box-shadow:0 6px 20px -6px rgba(0,0,0,.5); display:none; }
+.resume-read.show{ display:inline-flex; align-items:center; gap:.4rem; }
+
+.next-card{ position:fixed; left:50%; bottom:92px; transform:translateX(-50%) translateY(10px); z-index:250; background:var(--surface); border:1px solid var(--rule); border-radius:14px; padding:1rem 1.2rem; box-shadow:0 16px 40px -10px rgba(0,0,0,.6); font-family:var(--font-body); text-align:center; max-width:88vw; opacity:0; pointer-events:none; transition:opacity .3s, transform .3s; }
+.next-card.show{ opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
+.next-card .nc-label{ font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); }
+.next-card .nc-title{ font-size:1.05rem; color:var(--ink); margin:.3rem 0 .85rem; }
+.next-card .nc-actions{ display:flex; gap:.5rem; justify-content:center; }
+.next-card button, .next-card a{ border:1px solid var(--rule); background:transparent; color:var(--ink); border-radius:20px; padding:.45rem 1rem; font-family:var(--font-body); font-size:.9rem; cursor:pointer; text-decoration:none; }
+.next-card .nc-go{ background:var(--verde); border-color:var(--verde); color:#fff; }
+
+.skip-link{ position:absolute; left:-999px; top:0; z-index:400; background:var(--verde); color:#fff; padding:.6rem 1rem; border-radius:0 0 8px 0; font-family:var(--font-body); }
+.skip-link:focus{ left:0; }
+
+a:focus-visible, button:focus-visible, [tabindex]:focus-visible, .ap-track:focus-visible{ outline:2px solid var(--verde); outline-offset:2px; border-radius:3px; }
+.audio-pill .ap-play{ min-width:44px; min-height:44px; }
+@media (max-width:640px){ .ui-settings{ top:10px; right:10px; } .resume-read{ bottom:14px; } }
+
+/* hl-colors-v2 */
+:root{
+  --hl-color-a: rgba(255,238,0,0.95);   /* amarillo · importante */
+  --hl-color-n: rgba(255,150,40,0.95);  /* naranja  · cita/dato */
+  --hl-color-v: rgba(120,210,120,0.95); /* verde    · me convence */
+  --hl-color-c: rgba(255,128,128,0.95); /* coral    · dudo/revisar */
+}
+:root[data-theme="sepia"]{
+  --hl-color-a: rgba(212,160,0,0.9);
+  --hl-color-n: rgba(208,110,30,0.9);
+  --hl-color-v: rgba(80,150,80,0.9);
+  --hl-color-c: rgba(200,80,80,0.9);
+}
+:root[data-theme="claro"]{
+  --hl-color-a: rgba(218,160,0,0.95);
+  --hl-color-n: rgba(214,108,28,0.95);
+  --hl-color-v: rgba(64,140,64,0.95);
+  --hl-color-c: rgba(204,72,72,0.95);
+}
+.hl[data-c="a"]{ box-shadow: inset 0 -1.5px 0 var(--hl-color-a) !important; }
+.hl[data-c="n"]{ box-shadow: inset 0 -1.5px 0 var(--hl-color-n) !important; }
+.hl[data-c="v"]{ box-shadow: inset 0 -1.5px 0 var(--hl-color-v) !important; }
+.hl[data-c="c"]{ box-shadow: inset 0 -1.5px 0 var(--hl-color-c) !important; }
+.hl[data-c="a"]:hover{ box-shadow: inset 0 -2.5px 0 var(--hl-color-a) !important; }
+.hl[data-c="n"]:hover{ box-shadow: inset 0 -2.5px 0 var(--hl-color-n) !important; }
+.hl[data-c="v"]:hover{ box-shadow: inset 0 -2.5px 0 var(--hl-color-v) !important; }
+.hl[data-c="c"]:hover{ box-shadow: inset 0 -2.5px 0 var(--hl-color-c) !important; }
+
+.hl-swatch{
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 1.5px solid transparent;
+  background: transparent; cursor: pointer; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  margin: 0 2px;
+  position: relative;
+}
+.hl-swatch::after{
+  content: ""; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--sw-color);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.15);
+}
+.hl-swatch[data-c="a"]{ --sw-color: var(--hl-color-a); }
+.hl-swatch[data-c="n"]{ --sw-color: var(--hl-color-n); }
+.hl-swatch[data-c="v"]{ --sw-color: var(--hl-color-v); }
+.hl-swatch[data-c="c"]{ --sw-color: var(--hl-color-c); }
+.hl-swatch:hover{ border-color: var(--rule); }
+.hl-swatch.current{ border-color: var(--ink); }
+.hl-toolbar .hl-divider{ display:inline-block; width:1px; height:18px; background: var(--rule); margin: 0 4px; vertical-align: middle; }
+
+/* En móvil la barra se ancla al fondo (lejos del menú nativo del SO),
+   más grande para tocar bien con el dedo. En desktop sigue contextual. */
+@media (max-width: 640px) {
+  .hl-toolbar {
+    position: fixed !important;
+    left: 16px !important; right: 16px !important;
+    top: auto !important; bottom: 84px !important;
+    max-width: none;
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 16px;
+    padding: 12px 14px;
+    box-shadow: 0 20px 44px -10px rgba(0,0,0,0.75);
+    text-align: center;
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%) blur(20px);
+  }
+  .hl-swatch{ width: 38px; height: 38px; margin: 0 4px; }
+  .hl-swatch::after{ width: 22px; height: 22px; }
+  .hl-toolbar .hl-btn{ padding: 0.62rem 1rem; font-size: 0.92rem; }
+  .hl-toolbar .hl-divider{ height: 22px; margin: 0 6px; }
+}
+
+/* pill-polish-v1 */
+:root[data-theme="sepia"] .audio-pill,
+:root[data-theme="claro"] .audio-pill {
+  background: var(--surface);
+  border-color: var(--rule);
+  box-shadow:
+    0 14px 32px -14px rgba(80, 60, 30, 0.32),
+    0 4px 10px -2px rgba(80, 60, 30, 0.12),
+    0 0 0 3px rgba(255, 122, 24, 0.06);
+}
+:root[data-theme="sepia"] .audio-pill:hover,
+:root[data-theme="claro"] .audio-pill:hover {
+  box-shadow:
+    0 18px 40px -12px rgba(80, 60, 30, 0.42),
+    0 6px 14px -2px rgba(80, 60, 30, 0.18),
+    0 0 0 4px rgba(255, 122, 24, 0.10);
+}
+:root[data-theme="sepia"] .audio-pill .ap-play,
+:root[data-theme="claro"] .audio-pill .ap-play {
+  box-shadow:
+    0 4px 12px -2px rgba(255, 122, 24, 0.55),
+    0 2px 4px -1px rgba(0, 0, 0, 0.15);
+}
+:root[data-theme="sepia"] .audio-pill .ap-play:hover,
+:root[data-theme="claro"] .audio-pill .ap-play:hover {
+  box-shadow:
+    0 6px 16px -2px rgba(255, 122, 24, 0.7),
+    0 3px 6px -1px rgba(0, 0, 0, 0.2);
+}
+/* En claro/sepia, el texto del rate y los iconos secundarios necesitan tomar
+   los colores del tema (algunos estaban hardcoded a tono oscuro). */
+:root[data-theme="sepia"] .audio-pill .ap-rate,
+:root[data-theme="claro"] .audio-pill .ap-rate { color: var(--ink-soft); border-color: var(--rule); }
+:root[data-theme="sepia"] .audio-pill .ap-rate:hover,
+:root[data-theme="claro"] .audio-pill .ap-rate:hover { color: var(--ink); border-color: var(--ink-soft); }
+
+/* Pequeño realce permanente del play en oscuro también, para que el botón
+   principal sienta más «vivo» en cualquier tema (cambio sutil). */
+.audio-pill .ap-play {
+  box-shadow: 0 3px 10px -2px rgba(255, 122, 24, 0.35);
+}
+.audio-pill .ap-play:hover {
+  box-shadow: 0 5px 14px -2px rgba(255, 122, 24, 0.5);
+}
+
+/* ===== Citas en bloque — alineadas a la izquierda, filete fino gris ===== */
+.prose .pull-quote {
+  margin: 2.4rem 0; padding: 0.3rem 0 0.3rem 1.5rem;
+  border-left: 2px solid var(--rule);
+}
+.prose .pull-quote p {
+  font-size: 1.06rem; font-style: italic; line-height: 1.7; color: var(--ink); margin: 0 0 0.7rem;
+}
+.prose .pull-quote cite {
+  display: block; font-style: italic; font-size: 0.88rem; line-height: 1.5; color: var(--ink-soft);
+}
+
+/* ===== Ajás (feature de edición — invisible por defecto) =====
+   Un párrafo marcado como <p class="aja"> es donde vive el "clic" conceptual
+   del capítulo. Cuando el interruptor del índice está apagado (sin atributo
+   data-ajas en el html), no hay ninguna regla aplicada: el párrafo se ve
+   exactamente igual que cualquier otro. Cuando se prende, recibe un filete
+   sutil a la izquierda y un fondo levísimo del color de acento del libro.
+   El texto no cambia de tamaño ni de posición —solo cobra contorno—. */
+[data-ajas="on"] .prose .aja {
+  border-left: 2px solid var(--verde);
+  background: rgba(255, 122, 24, 0.06);
+  padding: 0.4rem 1rem 0.4rem 1.1rem;
+  margin-left: -1.1rem;
+  margin-right: -1rem;
+  border-radius: 2px 6px 6px 2px;
+}
+
+/* ===== Subtítulos de sección + listas para el formato de notas ===== */
+.prose h2.section-subtitle {
+  font-family: var(--font-body); font-weight: 400;
+  font-size: 1.15rem; letter-spacing: 0.02em;
+  color: var(--ink); margin: 2.6rem 0 0.9rem;
+  padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule);
+}
+.prose ul, .prose ol.numerada {
+  list-style: none; padding-left: 0;
+  margin: 1.1rem 0 1.8rem;
+}
+.prose ul li {
+  position: relative; padding-left: 1.5rem;
+  margin-bottom: 0.9rem; line-height: 1.7;
+}
+.prose ul li::before {
+  content: '·';
+  position: absolute; left: 0.4rem; top: -0.05em;
+  color: var(--verde); font-weight: 700; font-size: 1.3em;
+}
+.prose ol.numerada {
+  counter-reset: paso;
+}
+.prose ol.numerada li {
+  counter-increment: paso;
+  position: relative; padding-left: 2rem;
+  margin-bottom: 1.1rem; line-height: 1.7;
+}
+.prose ol.numerada li::before {
+  content: counter(paso) '.';
+  position: absolute; left: 0.2rem; top: 0;
+  color: var(--verde); font-weight: 400;
+  font-variant-numeric: tabular-nums;
+}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#contenido">Saltar al contenido</a>
+<div class="read-progress" aria-hidden="true"><i></i></div>
+<div class="ui-settings">
+  <button class="ui-gear" aria-label="Ajustes de lectura" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  </button>
+  <div class="ui-panel" role="menu" aria-label="Ajustes de lectura">
+    <h4>Tema</h4>
+    <div class="ui-row" data-group="theme">
+      <button data-theme-val="oscuro">Oscuro</button>
+      <button data-theme-val="sepia">Sepia</button>
+      <button data-theme-val="claro">Claro</button>
+    </div>
+    <h4>Tamaño del texto</h4>
+    <div class="ui-row" data-group="fs">
+      <button data-fs="0.9" style="font-size:.8rem">A</button>
+      <button data-fs="1">A</button>
+      <button data-fs="1.15" style="font-size:1.15rem">A</button>
+      <button data-fs="1.3" style="font-size:1.3rem">A</button>
+    </div>
+  </div>
+</div>
+
+<nav class="nav-top"><a href="index.html">← Índice</a></nav>
+
+<article class="page" id="contenido" tabindex="-1">
+
+  <div class="chapter-eyebrow">La trampa de la felicidad · notas de estudio</div>
+  <h1 class="chapter-title"><span class="w" data-w="0">El</span> <span class="w" data-w="1">agujero</span> <span class="w" data-w="2">negro</span> <span class="w" data-w="3">del</span> <span class="w" data-w="4">control</span></h1>
+  <p class="chapter-subtitle"><span class="w" data-w="5">Russ</span> <span class="w" data-w="6">Harris</span> — <span class="w" data-w="7">manejo</span> <span class="w" data-w="8">de</span> <span class="w" data-w="9">la</span> <span class="w" data-w="10">ansiedad</span> <span class="w" data-w="11">con</span> <span class="w" data-w="12">ACT</span></p>
+
+  <div class="ornament">• • •</div>
+
+  <div class="prose">
+
+    <h2 class="section-subtitle"><span class="w" data-w="13">Idea</span> <span class="w" data-w="14">central</span></h2>
+    <p class="lead"><span class="w" data-w="15">Este</span> <span class="w" data-w="16">capítulo</span> <span class="w" data-w="17">explica</span> <span class="w" data-w="18">por</span> <span class="w" data-w="19">qué</span> <span class="w" data-w="20">fallan</span> <span class="w" data-w="21">nuestros</span> <span class="w" data-w="22">intentos</span> <span class="w" data-w="23">habituales</span> <span class="w" data-w="24">de</span> <span class="w" data-w="25">manejar</span> <span class="w" data-w="26">la</span> <span class="w" data-w="27">ansiedad</span>. <span class="w" data-w="28">La</span> <span class="w" data-w="29">clave</span>: <span class="w" data-w="30">tenemos</span> <span class="w" data-w="31">mucho</span> <span class="w" data-w="32">menos</span> <span class="w" data-w="33">control</span> <span class="w" data-w="34">sobre</span> <span class="w" data-w="35">nuestros</span> <span class="w" data-w="36">pensamientos</span> <span class="w" data-w="37">y</span> <span class="w" data-w="38">sentimientos</span> <span class="w" data-w="39">del</span> <span class="w" data-w="40">que</span> <span class="w" data-w="41">creemos</span>, <span class="w" data-w="42">y</span> <span class="w" data-w="43">esforzarnos</span> <span class="w" data-w="44">por</span> <span class="w" data-w="45">controlarlos</span> <span class="w" data-w="46">suele</span> <span class="w" data-w="47">empeorar</span> <span class="w" data-w="48">las</span> <span class="w" data-w="49">cosas</span>. <span class="w" data-w="50">La</span> <span class="w" data-w="51">solución</span> <span class="w" data-w="52">es</span> <span class="w" data-w="53">el</span> <span class="w" data-w="54">problema</span>.</p>
+
+    <h2 class="section-subtitle"><span class="w" data-w="55">Mito</span> <span class="w" data-w="56">3</span>: <span class="w" data-w="57">es</span> <span class="w" data-w="58">fácil</span> <span class="w" data-w="59">controlar</span> <span class="w" data-w="60">lo</span> <span class="w" data-w="61">que</span> <span class="w" data-w="62">piensas</span> <span class="w" data-w="63">y</span> <span class="w" data-w="64">sientes</span></h2>
+    <p><span class="w" data-w="65">Este</span> <span class="w" data-w="66">mito</span> <span class="w" data-w="67">lo</span> <span class="w" data-w="68">sostienen</span> <span class="w" data-w="69">casi</span> <span class="w" data-w="70">todos</span> <span class="w" data-w="71">los</span> <span class="w" data-w="72">libros</span> <span class="w" data-w="73">de</span> <span class="w" data-w="74">autoayuda</span> —«<span class="w" data-w="75">cambia</span> <span class="w" data-w="76">los</span> <span class="w" data-w="77">pensamientos</span> <span class="w" data-w="78">negativos</span> <span class="w" data-w="79">por</span> <span class="w" data-w="80">positivos</span>»—. <span class="w" data-w="81">Es</span> <span class="w" data-w="82">falso</span>: <span class="w" data-w="83">los</span> <span class="w" data-w="84">pensamientos</span> <span class="w" data-w="85">negativos</span> <span class="w" data-w="86">siempre</span> <span class="w" data-w="87">regresan</span>, <span class="w" data-w="88">y</span> <span class="w" data-w="89">las</span> <span class="w" data-w="90">emociones</span> <span class="w" data-w="91">incómodas</span> —<span class="w" data-w="92">ira</span>, <span class="w" data-w="93">miedo</span>, <span class="w" data-w="94">tristeza</span>, <span class="w" data-w="95">culpa</span>, <span class="w" data-w="96">vergüenza</span>— <span class="w" data-w="97">vuelven</span> <span class="w" data-w="98">aunque</span> <span class="w" data-w="99">las</span> <span class="w" data-w="100">apartemos</span> <span class="w" data-w="101">un</span> <span class="w" data-w="102">rato</span>. <span class="w" data-w="103">Regla</span> <span class="w" data-w="104">clave</span>: <span class="w" data-w="105">cuanto</span> <span class="w" data-w="106">más</span> <span class="w" data-w="107">intensa</span> <span class="w" data-w="108">la</span> <span class="w" data-w="109">emoción</span> <span class="w" data-w="110">y</span> <span class="w" data-w="111">más</span> <span class="w" data-w="112">estresante</span> <span class="w" data-w="113">la</span> <span class="w" data-w="114">situación</span>, <span class="w" data-w="115">menos</span> <span class="w" data-w="116">control</span> <span class="w" data-w="117">tenemos</span>.</p>
+    <p><span class="w" data-w="118">Los</span> <span class="w" data-w="119">experimentos</span> <span class="w" data-w="120">que</span> <span class="w" data-w="121">lo</span> <span class="w" data-w="122">demuestran</span> <span class="w" data-w="123">son</span> <span class="w" data-w="124">varios</span>: <span class="w" data-w="125">intentar</span> <span class="w" data-w="126">no</span> <span class="w" data-w="127">pensar</span> <span class="w" data-w="128">en</span> <span class="w" data-w="129">un</span> <span class="w" data-w="130">helado</span>, <span class="w" data-w="131">borrar</span> <span class="w" data-w="132">un</span> <span class="w" data-w="133">recuerdo</span>, «<span class="w" data-w="134">desensibilizar</span>» <span class="w" data-w="135">una</span> <span class="w" data-w="136">pierna</span>, <span class="w" data-w="137">no</span> <span class="w" data-w="138">pensar</span> <span class="w" data-w="139">en</span> <span class="w" data-w="140">nada</span> <span class="w" data-w="141">durante</span> <span class="w" data-w="142">dos</span> <span class="w" data-w="143">minutos</span> <span class="w" data-w="144">mirando</span> <span class="w" data-w="145">una</span> <span class="w" data-w="146">estrella</span>, <span class="w" data-w="147">el</span> <span class="w" data-w="148">escenario</span> <span class="w" data-w="149">del</span> <span class="w" data-w="150">polígrafo</span>. <span class="w" data-w="151">Ninguno</span> <span class="w" data-w="152">funciona</span>.</p>
+
+    <h2 class="section-subtitle"><span class="w" data-w="153">La</span> <span class="w" data-w="154">ilusión</span> <span class="w" data-w="155">de</span> <span class="w" data-w="156">control</span></h2>
+    <p><span class="w" data-w="157">Podemos</span> <span class="w" data-w="158">moldear</span> <span class="w" data-w="159">el</span> <span class="w" data-w="160">mundo</span> <span class="w" data-w="161">externo</span> —<span class="w" data-w="162">refugio</span>, <span class="w" data-w="163">comida</span>, <span class="w" data-w="164">herramientas</span>—, <span class="w" data-w="165">así</span> <span class="w" data-w="166">que</span> <span class="w" data-w="167">creemos</span> <span class="w" data-w="168">que</span> <span class="w" data-w="169">podemos</span> <span class="w" data-w="170">controlar</span> <span class="w" data-w="171">también</span> <span class="w" data-w="172">el</span> <span class="w" data-w="173">mundo</span> <span class="w" data-w="174">interno</span>. <span class="w" data-w="175">Las</span> <span class="w" data-w="176">estrategias</span> <span class="w" data-w="177">de</span> <span class="w" data-w="178">control</span> <span class="w" data-w="179">funcionan</span> <span class="w" data-w="180">bien</span> <span class="w" data-w="181">con</span> <span class="w" data-w="182">lo</span> <span class="w" data-w="183">material</span>, <span class="w" data-w="184">pero</span> <span class="w" data-w="185">no</span> <span class="w" data-w="186">con</span> <span class="w" data-w="187">pensamientos</span> <span class="w" data-w="188">y</span> <span class="w" data-w="189">emociones</span>. <span class="w" data-w="190">El</span> <span class="w" data-w="191">mito</span> <span class="w" data-w="192">se</span> <span class="w" data-w="193">refuerza</span> <span class="w" data-w="194">porque</span> <span class="w" data-w="195">los</span> <span class="w" data-w="196">demás</span> <span class="w" data-w="197">parecen</span> <span class="w" data-w="198">felices</span>, <span class="w" data-w="199">pero</span> <span class="w" data-w="200">esconden</span> <span class="w" data-w="201">sus</span> <span class="w" data-w="202">luchas</span>: <span class="w" data-w="203">Penny</span> <span class="w" data-w="204">y</span> <span class="w" data-w="205">las</span> <span class="w" data-w="206">madres</span> <span class="w" data-w="207">del</span> <span class="w" data-w="208">grupo</span> <span class="w" data-w="209">sufrían</span> <span class="w" data-w="210">en</span> <span class="w" data-w="211">secreto</span> <span class="w" data-w="212">creyéndose</span> <span class="w" data-w="213">las</span> <span class="w" data-w="214">únicas</span>.</p>
+
+    <h2 class="section-subtitle"><span class="w" data-w="215">La</span> <span class="w" data-w="216">solución</span> <span class="w" data-w="217">es</span> <span class="w" data-w="218">el</span> <span class="w" data-w="219">problema</span></h2>
+    <p><span class="w" data-w="220">Cuando</span> <span class="w" data-w="221">forcejeamos</span> <span class="w" data-w="222">con</span> <span class="w" data-w="223">los</span> <span class="w" data-w="224">pensamientos</span> <span class="w" data-w="225">y</span> <span class="w" data-w="226">sentimientos</span> <span class="w" data-w="227">difíciles</span> <span class="w" data-w="228">para</span> <span class="w" data-w="229">librarnos</span> <span class="w" data-w="230">de</span> <span class="w" data-w="231">ellos</span>, <span class="w" data-w="232">a</span> <span class="w" data-w="233">menudo</span> <span class="w" data-w="234">empeoramos</span> <span class="w" data-w="235">la</span> <span class="w" data-w="236">vida</span>. <span class="w" data-w="237">La</span> <span class="w" data-w="238">analogía</span> <span class="w" data-w="239">del</span> <span class="w" data-w="240">eczema</span>: <span class="w" data-w="241">rascarse</span> <span class="w" data-w="242">alivia</span> <span class="w" data-w="243">un</span> <span class="w" data-w="244">instante</span> <span class="w" data-w="245">pero</span> <span class="w" data-w="246">libera</span> <span class="w" data-w="247">histamina</span> <span class="w" data-w="248">y</span> <span class="w" data-w="249">aumenta</span> <span class="w" data-w="250">el</span> <span class="w" data-w="251">picor</span>, <span class="w" data-w="252">un</span> <span class="w" data-w="253">círculo</span> <span class="w" data-w="254">vicioso</span>. <span class="w" data-w="255">Ejemplos</span> <span class="w" data-w="256">del</span> <span class="w" data-w="257">libro</span>: <span class="w" data-w="258">Joe</span> <span class="w" data-w="259">evita</span> <span class="w" data-w="260">socializar</span> <span class="w" data-w="261">y</span> <span class="w" data-w="262">se</span> <span class="w" data-w="263">siente</span> <span class="w" data-w="264">más</span> <span class="w" data-w="265">rechazado</span>; <span class="w" data-w="266">María</span> <span class="w" data-w="267">bebe</span> <span class="w" data-w="268">por</span> <span class="w" data-w="269">ansiedad</span> <span class="w" data-w="270">social</span> <span class="w" data-w="271">y</span> <span class="w" data-w="272">paga</span> <span class="w" data-w="273">resaca</span> <span class="w" data-w="274">y</span> <span class="w" data-w="275">vergüenza</span>; <span class="w" data-w="276">Prisha</span> <span class="w" data-w="277">come</span> <span class="w" data-w="278">chocolate</span> <span class="w" data-w="279">y</span> <span class="w" data-w="280">luego</span> <span class="w" data-w="281">se</span> <span class="w" data-w="282">siente</span> <span class="w" data-w="283">peor</span>; <span class="w" data-w="284">Alexei</span> <span class="w" data-w="285">trabaja</span> <span class="w" data-w="286">más</span> <span class="w" data-w="287">para</span> <span class="w" data-w="288">evitar</span> <span class="w" data-w="289">la</span> <span class="w" data-w="290">tensión</span> <span class="w" data-w="291">y</span> <span class="w" data-w="292">tensa</span> <span class="w" data-w="293">más</span> <span class="w" data-w="294">la</span> <span class="w" data-w="295">relación</span>.</p>
+
+    <h2 class="section-subtitle"><span class="w" data-w="296">Las</span> <span class="w" data-w="297">estrategias</span> <span class="w" data-w="298">de</span> <span class="w" data-w="299">forcejeo</span>: <span class="w" data-w="300">dos</span> <span class="w" data-w="301">grandes</span> <span class="w" data-w="302">grupos</span></h2>
+    <p><span class="w" data-w="303">Estrategias</span> <span class="w" data-w="304">de</span> <span class="w" data-w="305">lucha</span> —<span class="w" data-w="306">enfrentar</span> <span class="w" data-w="307">o</span> <span class="w" data-w="308">dominar</span> <span class="w" data-w="309">los</span> <span class="w" data-w="310">pensamientos</span> <span class="w" data-w="311">y</span> <span class="w" data-w="312">sentimientos</span>—:</p>
+    <ul>
+      <li><span class="w" data-w="313">Reprimir</span>: <span class="w" data-w="314">sacarlos</span> <span class="w" data-w="315">por</span> <span class="w" data-w="316">la</span> <span class="w" data-w="317">fuerza</span> <span class="w" data-w="318">o</span> <span class="w" data-w="319">enterrarlos</span>.</li>
+      <li><span class="w" data-w="320">Discutir</span>: <span class="w" data-w="321">argumentar</span> <span class="w" data-w="322">contra</span> <span class="w" data-w="323">tus</span> <span class="w" data-w="324">pensamientos</span>.</li>
+      <li><span class="w" data-w="325">Asumir</span> <span class="w" data-w="326">el</span> <span class="w" data-w="327">control</span>: «¡<span class="w" data-w="328">alégrate</span>!», «¡<span class="w" data-w="329">tranquilízate</span>!», <span class="w" data-w="330">forzar</span> <span class="w" data-w="331">pensamientos</span> <span class="w" data-w="332">positivos</span>.</li>
+      <li><span class="w" data-w="333">Cuestionarse</span>: <span class="w" data-w="334">criticarte</span> <span class="w" data-w="335">con</span> <span class="w" data-w="336">dureza</span> <span class="w" data-w="337">para</span> <span class="w" data-w="338">obligarte</span> <span class="w" data-w="339">a</span> <span class="w" data-w="340">sentir</span> <span class="w" data-w="341">de</span> <span class="w" data-w="342">otra</span> <span class="w" data-w="343">manera</span>.</li>
+    </ul>
+    <p><span class="w" data-w="344">Estrategias</span> <span class="w" data-w="345">de</span> <span class="w" data-w="346">huida</span> —<span class="w" data-w="347">escapar</span> <span class="w" data-w="348">o</span> <span class="w" data-w="349">evitar</span>—:</p>
+    <ul>
+      <li><span class="w" data-w="350">Decir</span> <span class="w" data-w="351">que</span> <span class="w" data-w="352">no</span>: <span class="w" data-w="353">evitar</span> <span class="w" data-w="354">situaciones</span>, <span class="w" data-w="355">abandonar</span>, <span class="w" data-w="356">procrastinar</span>.</li>
+      <li><span class="w" data-w="357">Distraerse</span>: <span class="w" data-w="358">centrarse</span> <span class="w" data-w="359">en</span> <span class="w" data-w="360">otra</span> <span class="w" data-w="361">cosa</span> —<span class="w" data-w="362">tabaco</span>, <span class="w" data-w="363">comida</span>, <span class="w" data-w="364">compras</span>, <span class="w" data-w="365">videojuegos</span>—.</li>
+      <li><span class="w" data-w="366">Consumo</span> <span class="w" data-w="367">de</span> <span class="w" data-w="368">sustancias</span>: <span class="w" data-w="369">drogas</span>, <span class="w" data-w="370">alcohol</span>, <span class="w" data-w="371">azúcar</span>, <span class="w" data-w="372">comida</span> <span class="w" data-w="373">basura</span>, <span class="w" data-w="374">tabaco</span>.</li>
+    </ul>
+
+    <h2 class="section-subtitle"><span class="w" data-w="375">El</span> <span class="w" data-w="376">problema</span> <span class="w" data-w="377">no</span> <span class="w" data-w="378">es</span> <span class="w" data-w="379">usarlas</span>: <span class="w" data-w="380">es</span> <span class="w" data-w="381">abusar</span> <span class="w" data-w="382">de</span> <span class="w" data-w="383">ellas</span></h2>
+    <p><span class="w" data-w="384">No</span> <span class="w" data-w="385">hay</span> <span class="w" data-w="386">problema</span> <span class="w" data-w="387">en</span> <span class="w" data-w="388">usar</span> <span class="w" data-w="389">estrategias</span> <span class="w" data-w="390">de</span> <span class="w" data-w="391">forcejeo</span> <span class="w" data-w="392">siempre</span> <span class="w" data-w="393">que</span> <span class="w" data-w="394">sea</span> <span class="w" data-w="395">con</span> <span class="w" data-w="396">moderación</span> <span class="w" data-w="397">y</span> <span class="w" data-w="398">sentido</span> <span class="w" data-w="399">común</span>, <span class="w" data-w="400">en</span> <span class="w" data-w="401">situaciones</span> <span class="w" data-w="402">donde</span> <span class="w" data-w="403">es</span> <span class="w" data-w="404">realista</span> <span class="w" data-w="405">que</span> <span class="w" data-w="406">funcionen</span>, <span class="w" data-w="407">y</span> <span class="w" data-w="408">que</span> <span class="w" data-w="409">no</span> <span class="w" data-w="410">te</span> <span class="w" data-w="411">impidan</span> <span class="w" data-w="412">comportarte</span> <span class="w" data-w="413">como</span> <span class="w" data-w="414">quieres</span> <span class="w" data-w="415">ni</span> <span class="w" data-w="416">hacer</span> <span class="w" data-w="417">lo</span> <span class="w" data-w="418">que</span> <span class="w" data-w="419">te</span> <span class="w" data-w="420">importa</span>. <span class="w" data-w="421">La</span> <span class="w" data-w="422">distracción</span> <span class="w" data-w="423">tras</span> <span class="w" data-w="424">un</span> <span class="w" data-w="425">mal</span> <span class="w" data-w="426">día</span> <span class="w" data-w="427">puede</span> <span class="w" data-w="428">ser</span> <span class="w" data-w="429">la</span> <span class="w" data-w="430">mejor</span> <span class="w" data-w="431">opción</span>.</p>
+    <p><span class="w" data-w="432">Se</span> <span class="w" data-w="433">vuelven</span> <span class="w" data-w="434">un</span> <span class="w" data-w="435">problema</span> <span class="w" data-w="436">cuando</span>:</p>
+    <ol class="numerada">
+      <li><span class="w" data-w="437">Se</span> <span class="w" data-w="438">usan</span> <span class="w" data-w="439">en</span> <span class="w" data-w="440">exceso</span>: <span class="w" data-w="441">adicción</span>, <span class="w" data-w="442">más</span> <span class="w" data-w="443">complicaciones</span>, <span class="w" data-w="444">más</span> <span class="w" data-w="445">dolor</span>. <span class="w" data-w="446">La</span> <span class="w" data-w="447">historia</span> <span class="w" data-w="448">del</span> <span class="w" data-w="449">propio</span> <span class="w" data-w="450">Harris</span> <span class="w" data-w="451">con</span> <span class="w" data-w="452">el</span> <span class="w" data-w="453">chocolate</span> <span class="w" data-w="454">Tim</span> <span class="w" data-w="455">Tam</span>, <span class="w" data-w="456">su</span> <span class="w" data-w="457">sobrepeso</span> <span class="w" data-w="458">e</span> <span class="w" data-w="459">hipertensión</span>.</li>
+      <li><span class="w" data-w="460">Se</span> <span class="w" data-w="461">usan</span> <span class="w" data-w="462">donde</span> <span class="w" data-w="463">no</span> <span class="w" data-w="464">pueden</span> <span class="w" data-w="465">funcionar</span>: <span class="w" data-w="466">el</span> <span class="w" data-w="467">duelo</span>. <span class="w" data-w="468">Donna</span> <span class="w" data-w="469">y</span> <span class="w" data-w="470">el</span> <span class="w" data-w="471">alcohol</span> <span class="w" data-w="472">tras</span> <span class="w" data-w="473">perder</span> <span class="w" data-w="474">a</span> <span class="w" data-w="475">su</span> <span class="w" data-w="476">familia</span>. <span class="w" data-w="477">La</span> <span class="w" data-w="478">analogía</span> <span class="w" data-w="479">de</span> <span class="w" data-w="480">la</span> <span class="w" data-w="481">pelota</span> <span class="w" data-w="482">bajo</span> <span class="w" data-w="483">el</span> <span class="w" data-w="484">agua</span>: <span class="w" data-w="485">mientras</span> <span class="w" data-w="486">aprietas</span> <span class="w" data-w="487">se</span> <span class="w" data-w="488">queda</span> <span class="w" data-w="489">abajo</span>, <span class="w" data-w="490">pero</span> <span class="w" data-w="491">al</span> <span class="w" data-w="492">soltarla</span> <span class="w" data-w="493">salta</span> <span class="w" data-w="494">con</span> <span class="w" data-w="495">fuerza</span>.</li>
+      <li><span class="w" data-w="496">Nos</span> <span class="w" data-w="497">impiden</span> <span class="w" data-w="498">hacer</span> <span class="w" data-w="499">lo</span> <span class="w" data-w="500">que</span> <span class="w" data-w="501">importa</span>: <span class="w" data-w="502">el</span> <span class="w" data-w="503">miedo</span> <span class="w" data-w="504">escénico</span> <span class="w" data-w="505">que</span> <span class="w" data-w="506">te</span> <span class="w" data-w="507">aparta</span> <span class="w" data-w="508">del</span> <span class="w" data-w="509">escenario</span>; <span class="w" data-w="510">evitar</span> <span class="w" data-w="511">las</span> <span class="w" data-w="512">emociones</span> <span class="w" data-w="513">del</span> <span class="w" data-w="514">divorcio</span> <span class="w" data-w="515">con</span> <span class="w" data-w="516">comida</span> <span class="w" data-w="517">basura</span> <span class="w" data-w="518">o</span> <span class="w" data-w="519">alcohol</span>.</li>
+    </ol>
+
+    <h2 class="section-subtitle"><span class="w" data-w="520">Evitación</span> <span class="w" data-w="521">experiencial</span></h2>
+    <p><span class="w" data-w="522">El</span> <span class="w" data-w="523">término</span> <span class="w" data-w="524">técnico</span> <span class="w" data-w="525">es</span> <span class="w" data-w="526">evitación</span> <span class="w" data-w="527">experiencial</span>: <span class="w" data-w="528">el</span> <span class="w" data-w="529">intento</span> <span class="w" data-w="530">continuado</span> <span class="w" data-w="531">de</span> <span class="w" data-w="532">evitar</span> <span class="w" data-w="533">o</span> <span class="w" data-w="534">librarse</span> <span class="w" data-w="535">de</span> <span class="w" data-w="536">experiencias</span> <span class="w" data-w="537">internas</span> <span class="w" data-w="538">no</span> <span class="w" data-w="539">deseadas</span>. <span class="w" data-w="540">Es</span> <span class="w" data-w="541">normal</span> <span class="w" data-w="542">y</span> <span class="w" data-w="543">sin</span> <span class="w" data-w="544">problema</span> <span class="w" data-w="545">en</span> <span class="w" data-w="546">niveles</span> <span class="w" data-w="547">bajos</span>. <span class="w" data-w="548">En</span> <span class="w" data-w="549">niveles</span> <span class="w" data-w="550">altos</span> —<span class="w" data-w="551">uso</span> <span class="w" data-w="552">excesivo</span> <span class="w" data-w="553">de</span> <span class="w" data-w="554">forcejeo</span>— <span class="w" data-w="555">tiene</span> <span class="w" data-w="556">tres</span> <span class="w" data-w="557">costes</span>:</p>
+    <ol class="numerada">
+      <li><span class="w" data-w="558">Consume</span> <span class="w" data-w="559">tiempo</span> <span class="w" data-w="560">y</span> <span class="w" data-w="561">energía</span> <span class="w" data-w="562">que</span> <span class="w" data-w="563">podrían</span> <span class="w" data-w="564">ir</span> <span class="w" data-w="565">a</span> <span class="w" data-w="566">avances</span>.</li>
+      <li><span class="w" data-w="567">Los</span> <span class="w" data-w="568">pensamientos</span> <span class="w" data-w="569">y</span> <span class="w" data-w="570">sentimientos</span> <span class="w" data-w="571">regresan</span>, <span class="w" data-w="572">a</span> <span class="w" data-w="573">menudo</span> <span class="w" data-w="574">con</span> <span class="w" data-w="575">más</span> <span class="w" data-w="576">intensidad</span>.</li>
+      <li><span class="w" data-w="577">Reduce</span> <span class="w" data-w="578">la</span> <span class="w" data-w="579">calidad</span> <span class="w" data-w="580">de</span> <span class="w" data-w="581">vida</span> <span class="w" data-w="582">a</span> <span class="w" data-w="583">largo</span> <span class="w" data-w="584">plazo</span>, <span class="w" data-w="585">se</span> <span class="w" data-w="586">vuelve</span> <span class="w" data-w="587">un</span> <span class="w" data-w="588">distanciamiento</span>. <span class="w" data-w="589">Es</span> <span class="w" data-w="590">un</span> <span class="w" data-w="591">factor</span> <span class="w" data-w="592">principal</span> <span class="w" data-w="593">en</span> <span class="w" data-w="594">ansiedad</span>, <span class="w" data-w="595">depresión</span>, <span class="w" data-w="596">adicciones</span>, <span class="w" data-w="597">baja</span> <span class="w" data-w="598">autoestima</span>, <span class="w" data-w="599">trastornos</span> <span class="w" data-w="600">alimentarios</span>, <span class="w" data-w="601">trastorno</span> <span class="w" data-w="602">obsesivo</span> <span class="w" data-w="603">compulsivo</span>, <span class="w" data-w="604">trauma</span>, <span class="w" data-w="605">dolor</span> <span class="w" data-w="606">crónico</span>.</li>
+    </ol>
+    <p><span class="w" data-w="607">A</span> <span class="w" data-w="608">veces</span> <span class="w" data-w="609">el</span> <span class="w" data-w="610">forcejeo</span> <span class="w" data-w="611">es</span> <span class="w" data-w="612">automático</span> <span class="w" data-w="613">e</span> <span class="w" data-w="614">inconsciente</span>: <span class="w" data-w="615">por</span> <span class="w" data-w="616">ejemplo</span>, <span class="w" data-w="617">el</span> <span class="w" data-w="618">nervio</span> <span class="w" data-w="619">vago</span> <span class="w" data-w="620">que</span> <span class="w" data-w="621">anestesia</span> <span class="w" data-w="622">ante</span> <span class="w" data-w="623">dolor</span> <span class="w" data-w="624">intenso</span>, <span class="w" data-w="625">la</span> <span class="w" data-w="626">sensación</span> <span class="w" data-w="627">de</span> <span class="w" data-w="628">vacío</span> <span class="w" data-w="629">o</span> <span class="w" data-w="630">de</span> <span class="w" data-w="631">estar</span> <span class="w" data-w="632">muerto</span> <span class="w" data-w="633">por</span> <span class="w" data-w="634">dentro</span>.</p>
+
+    <h2 class="section-subtitle"><span class="w" data-w="635">No</span> <span class="w" data-w="636">solo</span> <span class="w" data-w="637">el</span> <span class="w" data-w="638">qué</span>, <span class="w" data-w="639">también</span> <span class="w" data-w="640">el</span> <span class="w" data-w="641">porqué</span>: <span class="w" data-w="642">la</span> <span class="w" data-w="643">motivación</span></h2>
+    <p><span class="w" data-w="644">Lo</span> <span class="w" data-w="645">que</span> <span class="w" data-w="646">importa</span> <span class="w" data-w="647">no</span> <span class="w" data-w="648">es</span> <span class="w" data-w="649">solo</span> <span class="w" data-w="650">lo</span> <span class="w" data-w="651">que</span> <span class="w" data-w="652">haces</span>, <span class="w" data-w="653">sino</span> <span class="w" data-w="654">tu</span> <span class="w" data-w="655">motivación</span>. <span class="w" data-w="656">Cuidar</span> <span class="w" data-w="657">amigos</span>, <span class="w" data-w="658">trabajar</span>, <span class="w" data-w="659">donar</span>, <span class="w" data-w="660">hacer</span> <span class="w" data-w="661">deporte</span> <span class="w" data-w="662">pueden</span> <span class="w" data-w="663">ser</span> <span class="w" data-w="664">acciones</span> <span class="w" data-w="665">guiadas</span> <span class="w" data-w="666">por</span> <span class="w" data-w="667">valores</span> —<span class="w" data-w="668">mejoran</span> <span class="w" data-w="669">la</span> <span class="w" data-w="670">vida</span>— <span class="w" data-w="671">o</span> <span class="w" data-w="672">estrategias</span> <span class="w" data-w="673">de</span> <span class="w" data-w="674">forcejeo</span> <span class="w" data-w="675">si</span> <span class="w" data-w="676">su</span> <span class="w" data-w="677">objetivo</span> <span class="w" data-w="678">principal</span> <span class="w" data-w="679">es</span> <span class="w" data-w="680">huir</span> <span class="w" data-w="681">de</span> <span class="w" data-w="682">un</span> <span class="w" data-w="683">sentimiento</span>. <span class="w" data-w="684">Cuando</span> <span class="w" data-w="685">la</span> <span class="w" data-w="686">motivación</span> <span class="w" data-w="687">es</span> <span class="w" data-w="688">la</span> <span class="w" data-w="689">evitación</span>, <span class="w" data-w="690">se</span> <span class="w" data-w="691">pierde</span> <span class="w" data-w="692">la</span> <span class="w" data-w="693">alegría</span> <span class="w" data-w="694">y</span> <span class="w" data-w="695">la</span> <span class="w" data-w="696">vitalidad</span> <span class="w" data-w="697">de</span> <span class="w" data-w="698">lo</span> <span class="w" data-w="699">que</span> <span class="w" data-w="700">haces</span>.</p>
+
+    <h2 class="section-subtitle"><span class="w" data-w="701">El</span> <span class="w" data-w="702">caso</span> <span class="w" data-w="703">Michelle</span></h2>
+    <p><span class="w" data-w="704">Su</span> <span class="w" data-w="705">vida</span> <span class="w" data-w="706">se</span> <span class="w" data-w="707">basa</span> <span class="w" data-w="708">en</span> <span class="w" data-w="709">evitar</span> <span class="w" data-w="710">la</span> <span class="w" data-w="711">sensación</span> <span class="w" data-w="712">de</span> <span class="w" data-w="713">no</span> <span class="w" data-w="714">encajar</span> <span class="w" data-w="715">y</span> <span class="w" data-w="716">no</span> <span class="w" data-w="717">valer</span> <span class="w" data-w="718">nada</span>. <span class="w" data-w="719">Los</span> <span class="w" data-w="720">pensamientos</span> <span class="w" data-w="721">recurrentes</span>: «<span class="w" data-w="722">nadie</span> <span class="w" data-w="723">va</span> <span class="w" data-w="724">a</span> <span class="w" data-w="725">quererme</span>», «¿<span class="w" data-w="726">por</span> <span class="w" data-w="727">qué</span> <span class="w" data-w="728">no</span> <span class="w" data-w="729">encajo</span>?». <span class="w" data-w="730">Se</span> <span class="w" data-w="731">esfuerza</span> <span class="w" data-w="732">por</span> <span class="w" data-w="733">complacer</span> <span class="w" data-w="734">a</span> <span class="w" data-w="735">todos</span>, <span class="w" data-w="736">algo</span> <span class="w" data-w="737">aprendido</span> <span class="w" data-w="738">de</span> <span class="w" data-w="739">niña</span> <span class="w" data-w="740">con</span> <span class="w" data-w="741">padres</span> <span class="w" data-w="742">abusivos</span>, <span class="w" data-w="743">donde</span> <span class="w" data-w="744">complacer</span> <span class="w" data-w="745">la</span> <span class="w" data-w="746">protegía</span>. <span class="w" data-w="747">De</span> <span class="w" data-w="748">adulta</span>, <span class="w" data-w="749">ponerse</span> <span class="w" data-w="750">siempre</span> <span class="w" data-w="751">la</span> <span class="w" data-w="752">última</span> <span class="w" data-w="753">refuerza</span> <span class="w" data-w="754">su</span> <span class="w" data-w="755">sensación</span> <span class="w" data-w="756">de</span> <span class="w" data-w="757">no</span> <span class="w" data-w="758">valer</span> <span class="w" data-w="759">nada</span>. <span class="w" data-w="760">Cayó</span> <span class="w" data-w="761">en</span> <span class="w" data-w="762">la</span> <span class="w" data-w="763">trampa</span> <span class="w" data-w="764">de</span> <span class="w" data-w="765">la</span> <span class="w" data-w="766">felicidad</span>.</p>
+
+    <h2 class="section-subtitle">¿<span class="w" data-w="767">Cómo</span> <span class="w" data-w="768">huir</span> <span class="w" data-w="769">de</span> <span class="w" data-w="770">la</span> <span class="w" data-w="771">trampa</span>?</h2>
+    <p><span class="w" data-w="772">El</span> <span class="w" data-w="773">primer</span> <span class="w" data-w="774">paso</span> <span class="w" data-w="775">es</span> <span class="w" data-w="776">ser</span> <span class="w" data-w="777">consciente</span> <span class="w" data-w="778">de</span> <span class="w" data-w="779">ella</span>: <span class="w" data-w="780">observar</span> <span class="w" data-w="781">qué</span> <span class="w" data-w="782">haces</span> <span class="w" data-w="783">cada</span> <span class="w" data-w="784">día</span> <span class="w" data-w="785">para</span> <span class="w" data-w="786">evitar</span> <span class="w" data-w="787">el</span> <span class="w" data-w="788">malestar</span> <span class="w" data-w="789">y</span> <span class="w" data-w="790">anotar</span> <span class="w" data-w="791">las</span> <span class="w" data-w="792">consecuencias</span>. <span class="w" data-w="793">Llevar</span> <span class="w" data-w="794">un</span> <span class="w" data-w="795">diario</span> <span class="w" data-w="796">ayuda</span>. <span class="w" data-w="797">No</span> <span class="w" data-w="798">significa</span> <span class="w" data-w="799">resignarse</span> <span class="w" data-w="800">a</span> <span class="w" data-w="801">sufrir</span>; <span class="w" data-w="802">eso</span> <span class="w" data-w="803">sería</span> <span class="w" data-w="804">modo</span> <span class="w" data-w="805">obediente</span>. <span class="w" data-w="806">En</span> <span class="w" data-w="807">la</span> <span class="w" data-w="808">segunda</span> <span class="w" data-w="809">parte</span> <span class="w" data-w="810">del</span> <span class="w" data-w="811">libro</span> <span class="w" data-w="812">se</span> <span class="w" data-w="813">aprenden</span> <span class="w" data-w="814">formas</span> <span class="w" data-w="815">nuevas</span> <span class="w" data-w="816">y</span> <span class="w" data-w="817">eficaces</span> —<span class="w" data-w="818">distintas</span> <span class="w" data-w="819">del</span> <span class="w" data-w="820">forcejeo</span> <span class="w" data-w="821">y</span> <span class="w" data-w="822">de</span> <span class="w" data-w="823">la</span> <span class="w" data-w="824">obediencia</span>— <span class="w" data-w="825">de</span> <span class="w" data-w="826">gestionar</span> <span class="w" data-w="827">los</span> <span class="w" data-w="828">pensamientos</span> <span class="w" data-w="829">y</span> <span class="w" data-w="830">sentimientos</span> <span class="w" data-w="831">difíciles</span>.</p>
+
+    <h2 class="section-subtitle"><span class="w" data-w="832">Ejercicio</span> <span class="w" data-w="833">del</span> <span class="w" data-w="834">capítulo</span></h2>
+    <ol class="numerada">
+      <li>¿<span class="w" data-w="835">Qué</span> <span class="w" data-w="836">has</span> <span class="w" data-w="837">intentado</span> <span class="w" data-w="838">ya</span>? <span class="w" data-w="839">Lista</span> <span class="w" data-w="840">todas</span> <span class="w" data-w="841">tus</span> <span class="w" data-w="842">estrategias</span> <span class="w" data-w="843">de</span> <span class="w" data-w="844">forcejeo</span>: <span class="w" data-w="845">distracciones</span>, <span class="w" data-w="846">decir</span> <span class="w" data-w="847">que</span> <span class="w" data-w="848">no</span>, <span class="w" data-w="849">estrategias</span> <span class="w" data-w="850">mentales</span>, <span class="w" data-w="851">sustancias</span>, <span class="w" data-w="852">otras</span>. <span class="w" data-w="853">Hazlo</span> <span class="w" data-w="854">con</span> <span class="w" data-w="855">curiosidad</span>, <span class="w" data-w="856">sin</span> <span class="w" data-w="857">juzgarte</span>.</li>
+      <li>¿<span class="w" data-w="858">Qué</span> <span class="w" data-w="859">tal</span> <span class="w" data-w="860">ha</span> <span class="w" data-w="861">funcionado</span> <span class="w" data-w="862">a</span> <span class="w" data-w="863">largo</span> <span class="w" data-w="864">plazo</span>? ¿<span class="w" data-w="865">De</span> <span class="w" data-w="866">verdad</span> <span class="w" data-w="867">te</span> <span class="w" data-w="868">libran</span> <span class="w" data-w="869">del</span> <span class="w" data-w="870">dolor</span> <span class="w" data-w="871">de</span> <span class="w" data-w="872">forma</span> <span class="w" data-w="873">permanente</span>? ¿<span class="w" data-w="874">Cuánto</span> <span class="w" data-w="875">tarda</span> <span class="w" data-w="876">en</span> <span class="w" data-w="877">volver</span>?</li>
+      <li>¿<span class="w" data-w="878">Cuánto</span> <span class="w" data-w="879">te</span> <span class="w" data-w="880">ha</span> <span class="w" data-w="881">costado</span>? <span class="w" data-w="882">Marca</span> <span class="w" data-w="883">la</span> <span class="w" data-w="884">frecuencia</span>, <span class="w" data-w="885">de</span> <span class="w" data-w="886">nunca</span> <span class="w" data-w="887">a</span> <span class="w" data-w="888">siempre</span>. <span class="w" data-w="889">Cuanto</span> <span class="w" data-w="890">más</span> <span class="w" data-w="891">a</span> <span class="w" data-w="892">la</span> <span class="w" data-w="893">derecha</span>, <span class="w" data-w="894">mayor</span> <span class="w" data-w="895">tu</span> <span class="w" data-w="896">nivel</span> <span class="w" data-w="897">de</span> <span class="w" data-w="898">evitación</span> <span class="w" data-w="899">experiencial</span>. <span class="w" data-w="900">Tres</span> <span class="w" data-w="901">descubrimientos</span> <span class="w" data-w="902">esperables</span>: <span class="w" data-w="903">has</span> <span class="w" data-w="904">invertido</span> <span class="w" data-w="905">mucho</span> <span class="w" data-w="906">forcejeando</span>; <span class="w" data-w="907">el</span> <span class="w" data-w="908">alivio</span> <span class="w" data-w="909">es</span> <span class="w" data-w="910">temporal</span>; <span class="w" data-w="911">y</span> <span class="w" data-w="912">en</span> <span class="w" data-w="913">exceso</span>, <span class="w" data-w="914">estas</span> <span class="w" data-w="915">estrategias</span> <span class="w" data-w="916">tienen</span> <span class="w" data-w="917">costes</span> <span class="w" data-w="918">reales</span> <span class="w" data-w="919">en</span> <span class="w" data-w="920">dinero</span>, <span class="w" data-w="921">tiempo</span>, <span class="w" data-w="922">salud</span> <span class="w" data-w="923">y</span> <span class="w" data-w="924">relaciones</span>.</li>
+    </ol>
+
+  </div>
+
+</article>
+
+<nav class="nav-foot"><a class="prev" href="el-punto-de-eleccion.html">El punto de elección</a><a class="idx" href="index.html">Índice</a><span></span></nav>
+
+<aside class="audio-pill" data-state="collapsed" data-duration="29:20" data-storage-key="agujero-negro-del-control" aria-label="Reproductor de audio del capítulo">
+  <audio class="ap-audio" preload="metadata" src="audio/agujero-negro-del-control.mp3"></audio>
+  <button class="ap-play" type="button" aria-label="Reproducir capítulo">
+    <svg class="ap-icon-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+    <svg class="ap-icon-pause" viewBox="0 0 24 24" aria-hidden="true" style="display:none"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>
+  </button>
+  <div class="ap-resume-hint" aria-hidden="true"></div>
+  <div class="ap-meta">
+    <button class="ap-btn ap-skip ap-skip-back" type="button" aria-label="Retroceder 15 segundos" title="Retroceder 15 s (J)">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M11 6V3L6 7l5 4V8c3.3 0 6 2.7 6 6s-2.7 6-6 6-6-2.7-6-6H3c0 4.4 3.6 8 8 8s8-3.6 8-8-3.6-8-8-8z"/>
+        <text class="skip-label" x="11" y="17" text-anchor="middle">15</text>
+      </svg>
+    </button>
+    <button class="ap-btn ap-skip ap-skip-fwd" type="button" aria-label="Avanzar 15 segundos" title="Avanzar 15 s (L)">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M13 6V3l5 4-5 4V8c-3.3 0-6 2.7-6 6s2.7 6 6 6 6-2.7 6-6h2c0 4.4-3.6 8-8 8s-8-3.6-8-8 3.6-8 8-8z"/>
+        <text class="skip-label" x="13" y="17" text-anchor="middle">15</text>
+      </svg>
+    </button>
+    <div class="ap-track" role="slider" tabindex="0" aria-label="Posición del audio" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+      <div class="ap-rail"></div>
+      <div class="ap-fill"></div>
+      <div class="ap-thumb"></div>
+    </div>
+    <div class="ap-time"><span class="ap-current">0:00</span><span class="ap-sep"> / </span><span class="ap-duration">--:--</span></div>
+    <button class="ap-btn ap-karaoke" type="button" aria-label="Resaltado palabra por palabra (toggle)" title="Karaoke (K)">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M4 18 L8 7 L12 18 M5.5 14 L10.5 14"/>
+        <path d="M19 18 V11.5 a3 3 0 0 0 -6 0 a3 3 0 0 0 3 3 a3 3 0 0 0 3 -3"/>
+        <line class="strike" x1="3" y1="20" x2="21" y2="4"/>
+      </svg>
+    </button>
+    <button class="ap-rate" type="button" aria-label="Velocidad de reproducción" title="Velocidad">1×</button>
+    <button class="ap-close" type="button" aria-label="Minimizar reproductor" title="Minimizar (Esc)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6 L18 18 M18 6 L6 18"/></svg>
+    </button>
+  </div>
+</aside>
+
+<script>
+/* AUDIO PILL controller v2 */
+(function(){
+  var pill = document.querySelector('.audio-pill');
+  if (!pill) return;
+  var a = pill.querySelector('.ap-audio');
+  var b = pill.querySelector('.ap-play');
+  var pi = pill.querySelector('.ap-icon-play');
+  var ps = pill.querySelector('.ap-icon-pause');
+  var tr = pill.querySelector('.ap-track');
+  var fi = pill.querySelector('.ap-fill');
+  var th = pill.querySelector('.ap-thumb');
+  var cu = pill.querySelector('.ap-current');
+  var du = pill.querySelector('.ap-duration');
+  var rateBtn = pill.querySelector('.ap-rate');
+  var closeBtn = pill.querySelector('.ap-close');
+  var skipBackBtn = pill.querySelector('.ap-skip-back');
+  var skipFwdBtn  = pill.querySelector('.ap-skip-fwd');
+  var karaokeBtn  = pill.querySelector('.ap-karaoke');
+  var hint        = pill.querySelector('.ap-resume-hint');
+  var STORAGE_KEY = pill.getAttribute('data-storage-key') || 'default';
+  var POS_KEY = 'audio-pill:pos:' + STORAGE_KEY;
+  var KARAOKE_KEY = 'audio-pill:karaoke';
+  var RATES = [1, 1.25, 1.5, 0.8];
+  var rateIdx = 0, lastSaveAt = 0;
+  function fmt(t){ if(!isFinite(t)) return '0:00'; var m=Math.floor(t/60), s=Math.floor(t%60); return m+':'+(s<10?'0':'')+s; }
+  function expand(){ pill.setAttribute('data-state','expanded'); }
+  function collapse(){ pill.setAttribute('data-state','collapsed'); }
+  function setPlayIcon(playing){
+    if (playing) { pi.style.display='none'; ps.style.display=''; b.setAttribute('aria-label','Pausar'); }
+    else         { pi.style.display=''; ps.style.display='none'; b.setAttribute('aria-label','Reproducir'); }
+  }
+  function safePlay(){
+    var p = a.play();
+    if (p && typeof p.catch === 'function') p.catch(function(){});
+  }
+  function savePos(){
+    if (!a.duration || !isFinite(a.duration)) return;
+    var t = a.currentTime;
+    if (t > a.duration - 8) { try { localStorage.removeItem(POS_KEY); } catch(e){} return; }
+    if (t < 3) return;
+    try { localStorage.setItem(POS_KEY, String(Math.floor(t))); } catch(e){}
+  }
+  function loadPos(){
+    try { var v = localStorage.getItem(POS_KEY); var t = parseFloat(v); return isFinite(t) && t > 0 ? t : 0; }
+    catch(e){ return 0; }
+  }
+  function showResumeHint(s){
+    if (!hint) return;
+    hint.textContent = '↻ ' + fmt(s);
+    hint.classList.add('show');
+    setTimeout(function(){ hint.classList.remove('show'); }, 2200);
+  }
+  a.addEventListener('loadedmetadata', function(){
+    if (isFinite(a.duration)) pill.setAttribute('data-duration', fmt(a.duration));
+    if (du && isFinite(a.duration)) du.textContent = fmt(a.duration);
+    var saved = loadPos();
+    if (saved > 0 && saved < a.duration - 8) {
+      a.currentTime = saved;
+      showResumeHint(saved);
+    }
+  });
+  a.addEventListener('timeupdate', function(){
+    var pct = a.duration ? (a.currentTime/a.duration)*100 : 0;
+    fi.style.width = pct+'%'; th.style.left = pct+'%';
+    cu.textContent = fmt(a.currentTime);
+    tr.setAttribute('aria-valuenow', Math.round(pct));
+    if (!a.paused) {
+      var now = (typeof performance !== 'undefined' && performance.now) ? performance.now() : 0;
+      if (now - lastSaveAt > 3000) { savePos(); lastSaveAt = now; }
+    }
+  });
+  a.addEventListener('pause', function(){ savePos(); });
+  window.addEventListener('beforeunload', savePos);
+  document.addEventListener('visibilitychange', function(){ if (document.hidden) savePos(); });
+  a.addEventListener('play',  function(){ pill.classList.add('playing'); setPlayIcon(true); expand(); });
+  a.addEventListener('pause', function(){ pill.classList.remove('playing'); setPlayIcon(false); });
+  a.addEventListener('ended', function(){ pill.classList.remove('playing'); setPlayIcon(false); try { localStorage.removeItem(POS_KEY); } catch(e){} });
+  b.addEventListener('click', function(e){ e.stopPropagation(); if (a.paused) safePlay(); else a.pause(); });
+  closeBtn.addEventListener('click', function(e){ e.stopPropagation(); a.pause(); collapse(); });
+  rateBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    rateIdx = (rateIdx+1) % RATES.length;
+    var r = RATES[rateIdx];
+    a.playbackRate = r;
+    rateBtn.textContent = (r % 1 === 0 ? r.toFixed(0) : r) + '×';
+    rateBtn.classList.toggle('active', r !== 1);
+    rateBtn.setAttribute('aria-label', 'Velocidad: ' + rateBtn.textContent + '. Tocar para cambiar.');
+  });
+  function skip(secs){ if (!a.duration) return; a.currentTime = Math.max(0, Math.min(a.duration, a.currentTime + secs)); }
+  if (skipBackBtn) skipBackBtn.addEventListener('click', function(e){ e.stopPropagation(); skip(-15); });
+  if (skipFwdBtn)  skipFwdBtn.addEventListener('click',  function(e){ e.stopPropagation(); skip(+15); });
+  function applyKaraokePref(){
+    var off = false;
+    try { off = localStorage.getItem(KARAOKE_KEY) === 'off'; } catch(e){}
+    document.body.classList.toggle('karaoke-off', off);
+    if (karaokeBtn) {
+      karaokeBtn.classList.toggle('active', !off);
+      karaokeBtn.setAttribute('aria-pressed', String(!off));
+      karaokeBtn.setAttribute('aria-label', off ? 'Activar resaltado palabra por palabra' : 'Desactivar resaltado palabra por palabra');
+    }
+  }
+  applyKaraokePref();
+  if (karaokeBtn) karaokeBtn.addEventListener('click', function(e){
+    e.stopPropagation();
+    var current = document.body.classList.contains('karaoke-off');
+    try { localStorage.setItem(KARAOKE_KEY, current ? 'on' : 'off'); } catch(e){}
+    applyKaraokePref();
+  });
+  (function(){
+    var dragging = false, wasPlaying = false;
+    function seekAt(clientX){
+      if (!a.duration) return;
+      var r = tr.getBoundingClientRect();
+      var pct = Math.max(0, Math.min(1, (clientX - r.left) / r.width));
+      a.currentTime = pct * a.duration;
+    }
+    function onDown(e){
+      if (!a.duration) return;
+      dragging = true;
+      wasPlaying = !a.paused;
+      if (wasPlaying) a.pause();
+      tr.classList.add('dragging');
+      var x = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+      seekAt(x);
+      e.preventDefault();
+    }
+    function onMove(e){
+      if (!dragging) return;
+      var x = (e.touches && e.touches[0]) ? e.touches[0].clientX : e.clientX;
+      seekAt(x);
+      e.preventDefault();
+    }
+    function onUp(){
+      if (!dragging) return;
+      dragging = false;
+      tr.classList.remove('dragging');
+      if (wasPlaying) { var p = a.play(); if (p && typeof p.catch === 'function') p.catch(function(){}); }
+    }
+    tr.addEventListener('mousedown', onDown);
+    tr.addEventListener('touchstart', onDown, { passive: false });
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('touchmove', onMove, { passive: false });
+    window.addEventListener('mouseup', onUp);
+    window.addEventListener('touchend', onUp);
+    window.addEventListener('touchcancel', onUp);
+  })();
+  tr.addEventListener('keydown', function(e){
+    if (!a.duration) return;
+    if      (e.key==='ArrowRight'){ a.currentTime = Math.min(a.duration, a.currentTime+5); e.preventDefault(); }
+    else if (e.key==='ArrowLeft') { a.currentTime = Math.max(0, a.currentTime-5);          e.preventDefault(); }
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.target && /^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+    if (e.target && e.target.isContentEditable) return;
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    var k = e.key.toLowerCase();
+    if (k === ' ' && !(/^(BUTTON|A)$/.test(e.target.tagName))) {
+      if (!pill.contains(document.activeElement)) return;
+      e.preventDefault();
+      if (a.paused) safePlay(); else a.pause();
+    } else if (k === 'j') { skip(-15); e.preventDefault(); }
+      else if (k === 'l') { skip(+15); e.preventDefault(); }
+      else if (k === 'k' && karaokeBtn) { karaokeBtn.click(); e.preventDefault(); }
+      else if (e.key === 'Escape' && pill.getAttribute('data-state') === 'expanded') { a.pause(); collapse(); }
+  });
+})();
+</script>
+<script>
+/* Karaoke v2: carga alignment y resalta palabra + puntuación. Respeta body.karaoke-off. */
+(function(){
+  var ALIGN_URL = 'audio/agujero-negro-del-control.alignment.json';
+  var audio = document.querySelector('.ap-audio');
+  if (!audio) return;
+  var words = null, wordEls = [], glueEls = [], lastIdx = -1, lastScrollAt = 0;
+  document.querySelectorAll('.w').forEach(function(el){
+    var i = parseInt(el.getAttribute('data-w'), 10);
+    if (!isNaN(i)) wordEls[i] = el;
+  });
+  try {
+    var allW = document.querySelectorAll('.w');
+    var rootEls = [];
+    allW.forEach(function(w){
+      var p = w.parentNode;
+      while (p && p !== document.body && !/^(P|H1|H2|H3|DIV|LI|BLOCKQUOTE)$/.test(p.tagName)) p = p.parentNode;
+      if (p && rootEls.indexOf(p) < 0) rootEls.push(p);
+    });
+    rootEls.forEach(function(root){
+      var walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_TEXT, null);
+      var seq = [], n;
+      while ((n = walker.nextNode())) {
+        if (n.nodeType === 3) { if (n.textContent) seq.push(n); }
+        else if (n.nodeType === 1 && n.classList && n.classList.contains('w')) seq.push(n);
+      }
+      var currentIdx = -1;
+      seq.forEach(function(node){
+        if (node.nodeType === 1) {
+          var i = parseInt(node.getAttribute('data-w'), 10);
+          if (!isNaN(i)) currentIdx = i;
+        } else if (node.nodeType === 3 && currentIdx >= 0 && node.parentNode) {
+          var g = document.createElement('span');
+          g.className = 'g';
+          g.textContent = node.textContent;
+          node.parentNode.replaceChild(g, node);
+          if (!glueEls[currentIdx]) glueEls[currentIdx] = [];
+          glueEls[currentIdx].push(g);
+        }
+      });
+    });
+  } catch (err) { /* el karaoke base sigue funcionando sin glue */ }
+  fetch(ALIGN_URL)
+    .then(function(r){ return r.ok ? r.json() : null; })
+    .then(function(data){
+      if (!data || !data.words) return;
+      words = data.words;
+      audio.addEventListener('timeupdate', tick);
+      audio.addEventListener('seeked', function(){ resetState(); tick(); });
+    })
+    .catch(function(){});
+  function findIdx(t){
+    if (!words || !words.length) return -1;
+    var lo = 0, hi = words.length - 1, ans = -1;
+    while (lo <= hi) { var mid = (lo + hi) >> 1; if (words[mid].s <= t) { ans = mid; lo = mid + 1; } else { hi = mid - 1; } }
+    return ans;
+  }
+  function setGlue(i, add){
+    var arr = glueEls[i]; if (!arr) return;
+    for (var k = 0; k < arr.length; k++) arr[k].classList[add ? 'add' : 'remove']('leida');
+  }
+  function resetState(){
+    for (var k = 0; k < wordEls.length; k++) {
+      if (wordEls[k]) wordEls[k].classList.remove('activa','leida');
+      setGlue(k, false);
+    }
+    lastIdx = -1;
+  }
+  function tick(){
+    if (!words) return;
+    var idx = findIdx(audio.currentTime);
+    if (idx === lastIdx) return;
+    if (idx < lastIdx) {
+      for (var i = idx + 1; i <= lastIdx; i++) {
+        if (wordEls[i]) wordEls[i].classList.remove('leida','activa');
+        setGlue(i, false);
+      }
+    } else {
+      for (var j = Math.max(0, lastIdx); j < idx; j++) {
+        if (wordEls[j]) { wordEls[j].classList.remove('activa'); wordEls[j].classList.add('leida'); }
+        setGlue(j, true);
+      }
+    }
+    if (idx >= 0 && wordEls[idx]) {
+      wordEls[idx].classList.remove('leida');
+      wordEls[idx].classList.add('activa');
+      var rect = wordEls[idx].getBoundingClientRect();
+      var vh = window.innerHeight;
+      if (rect.top < vh*0.22 || rect.bottom > vh*0.72) {
+        var now = (typeof performance !== 'undefined' && performance.now) ? performance.now() : 0;
+        if (now - lastScrollAt > 600) {
+          wordEls[idx].scrollIntoView({behavior:'smooth', block:'center'});
+          lastScrollAt = now;
+        }
+      }
+    }
+    lastIdx = idx;
+  }
+  document.addEventListener('click', function(e){
+    var t = e.target;
+    var wEl = (t && t.closest) ? t.closest('.w') : null;
+    if (!wEl) return;
+    var i = parseInt(wEl.getAttribute('data-w'), 10);
+    if (isNaN(i) || !words || !words[i]) return;
+    audio.currentTime = words[i].s;
+    if (audio.paused) { var p = audio.play(); if (p && typeof p.catch === 'function') p.catch(function(){}); }
+  });
+})();
+</script>
+<script>
+/* Subrayado con colores — instalado por tools/add_highlight_colors.py */
+(function(){
+  var STORAGE_KEY = 'highlights:' + (location.pathname.split('/').pop() || 'doc');
+  var prose = document.querySelector('.prose');
+  if (!prose) return;
+  var COLORS = ['a','n','v','c'];
+  var LAST_COLOR_KEY = 'highlights:last-color';
+  var DEFAULT_COLOR = 'a';
+  var lastColor;
+  try { lastColor = localStorage.getItem(LAST_COLOR_KEY) || DEFAULT_COLOR; } catch(e){ lastColor = DEFAULT_COLOR; }
+  if (COLORS.indexOf(lastColor) === -1) lastColor = DEFAULT_COLOR;
+
+  // saved: arreglo donde cada item es Number (=amarillo, compat) o [idx, color].
+  var saved;
+  try { saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch(e){ saved = []; }
+  if (!Array.isArray(saved)) saved = [];
+  // mapa idx → color para pintar
+  function buildMap(){
+    var m = {};
+    saved.forEach(function(it){
+      if (typeof it === 'number') m[it] = 'a';
+      else if (Array.isArray(it) && it.length >= 2) m[it[0]] = COLORS.indexOf(it[1]) !== -1 ? it[1] : 'a';
+    });
+    return m;
+  }
+  function paintAll(){
+    var m = buildMap();
+    prose.querySelectorAll('.w.hl').forEach(function(el){
+      el.classList.remove('hl'); el.removeAttribute('data-c');
+    });
+    Object.keys(m).forEach(function(idx){
+      var el = prose.querySelector('.w[data-w="'+idx+'"]');
+      if (el){ el.classList.add('hl'); el.setAttribute('data-c', m[idx]); }
+    });
+  }
+  paintAll();
+
+  function setColor(idx, color){
+    // quitar entry previa
+    for (var i = saved.length - 1; i >= 0; i--){
+      var it = saved[i];
+      var k = typeof it === 'number' ? it : (Array.isArray(it) ? it[0] : -1);
+      if (k === idx) saved.splice(i, 1);
+    }
+    // guardar (forma compacta para amarillo)
+    if (color === 'a') saved.push(idx);
+    else saved.push([idx, color]);
+  }
+  function removeIdx(idx){
+    for (var i = saved.length - 1; i >= 0; i--){
+      var it = saved[i];
+      var k = typeof it === 'number' ? it : (Array.isArray(it) ? it[0] : -1);
+      if (k === idx) saved.splice(i, 1);
+    }
+  }
+  function save(){
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(saved)); } catch(e){}
+  }
+
+  var toolbar = document.createElement('div');
+  toolbar.className = 'hl-toolbar';
+  toolbar.setAttribute('role','toolbar');
+  toolbar.setAttribute('aria-label','Acciones de subrayado');
+  document.body.appendChild(toolbar);
+
+  var selectedIdxs = [];
+  function hideToolbar(){ toolbar.classList.remove('show'); selectedIdxs = []; }
+
+  function getSelectedWordIdxs(){
+    var sel = window.getSelection();
+    if (!sel || !sel.rangeCount || sel.toString().trim() === '') return [];
+    var range = sel.getRangeAt(0);
+    if (!prose.contains(range.commonAncestorContainer) && !range.intersectsNode(prose)) return [];
+    var idxs = [];
+    var allWords = prose.querySelectorAll('.w');
+    for (var i = 0; i < allWords.length; i++){
+      if (range.intersectsNode(allWords[i])){
+        var idx = parseInt(allWords[i].getAttribute('data-w'), 10);
+        if (!isNaN(idx)) idxs.push(idx);
+      }
+    }
+    return idxs;
+  }
+
+  function applyColor(color){
+    selectedIdxs.forEach(function(i){ setColor(i, color); });
+    try { localStorage.setItem(LAST_COLOR_KEY, color); } catch(e){}
+    lastColor = color;
+    save(); paintAll(); hideToolbar();
+    var sel = window.getSelection(); if (sel) sel.removeAllRanges();
+  }
+  function removeAll(){
+    selectedIdxs.forEach(function(i){ removeIdx(i); });
+    save(); paintAll(); hideToolbar();
+    var sel = window.getSelection(); if (sel) sel.removeAllRanges();
+  }
+
+  var COLOR_LABEL = { a: 'Amarillo · importante', n: 'Naranja · cita o dato', v: 'Verde · me convence', c: 'Coral · dudo' };
+
+  function showToolbar(x, y, currentColor){
+    toolbar.innerHTML = '';
+    COLORS.forEach(function(c){
+      var sw = document.createElement('button');
+      sw.type = 'button'; sw.className = 'hl-swatch';
+      sw.setAttribute('data-c', c);
+      sw.setAttribute('aria-label', COLOR_LABEL[c]);
+      sw.title = COLOR_LABEL[c];
+      if (currentColor === c) sw.classList.add('current');
+      sw.addEventListener('mousedown', function(e){ e.preventDefault(); });
+      sw.addEventListener('click', function(e){ e.stopPropagation(); applyColor(c); });
+      toolbar.appendChild(sw);
+    });
+    if (currentColor){
+      var div = document.createElement('span'); div.className = 'hl-divider';
+      toolbar.appendChild(div);
+      var rm = document.createElement('button');
+      rm.type = 'button'; rm.className = 'hl-btn hl-btn-rm';
+      rm.textContent = 'Quitar';
+      rm.addEventListener('mousedown', function(e){ e.preventDefault(); });
+      rm.addEventListener('click', function(e){ e.stopPropagation(); removeAll(); });
+      toolbar.appendChild(rm);
+    }
+    toolbar.classList.add('show');
+    // En móvil, el CSS la fija al fondo con !important; el JS no posiciona.
+    if (window.matchMedia && window.matchMedia('(max-width: 640px)').matches) {
+      toolbar.style.left = ''; toolbar.style.top = '';
+      return;
+    }
+    var w = toolbar.offsetWidth, h = toolbar.offsetHeight;
+    var vw = window.innerWidth;
+    var left = Math.max(8, Math.min(vw - w - 8, x - w/2));
+    var top = Math.max(window.scrollY + 8, y - h - 8);
+    toolbar.style.left = left + 'px';
+    toolbar.style.top = top + 'px';
+  }
+
+  function onSelection(e){
+    if (e && e.target && toolbar.contains(e.target)) return;
+    if (e && e.target && e.target.closest && e.target.closest('.audio-pill')) return;
+    setTimeout(function(){
+      var idxs = getSelectedWordIdxs();
+      if (idxs.length === 0){ hideToolbar(); return; }
+      var sel = window.getSelection();
+      var range = sel.getRangeAt(0);
+      var rect = range.getBoundingClientRect();
+      if (rect.width === 0 && rect.height === 0){ hideToolbar(); return; }
+      var x = rect.left + window.scrollX + rect.width/2;
+      var y = rect.top + window.scrollY;
+      var m = buildMap();
+      // color "actual" de la selección: si todas las palabras subrayadas comparten color, ese; si no, ninguno
+      var present = idxs.map(function(i){ return m[i]; }).filter(Boolean);
+      var allSame = present.length === idxs.length && present.every(function(c){ return c === present[0]; });
+      var currentColor = allSame && present.length ? present[0] : null;
+      selectedIdxs = idxs;
+      showToolbar(x, y, currentColor);
+    }, 10);
+  }
+
+  document.addEventListener('mouseup', onSelection);
+  document.addEventListener('touchend', onSelection);
+  document.addEventListener('mousedown', function(e){
+    if (toolbar.contains(e.target)) return;
+    hideToolbar();
+  });
+  window.addEventListener('scroll', hideToolbar, { passive: true });
+  window.addEventListener('resize', hideToolbar);
+})();
+</script>
+
+<script>
+/* usabilidad-v1 */
+(function(){
+  var doc=document.documentElement;
+  function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+  function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+
+  var gear=document.querySelector('.ui-gear'), panel=document.querySelector('.ui-panel');
+  if(gear&&panel){
+    gear.addEventListener('click',function(e){e.stopPropagation();var o=panel.classList.toggle('open');gear.setAttribute('aria-expanded',String(o));});
+    document.addEventListener('click',function(e){if(!panel.contains(e.target)&&!gear.contains(e.target)){panel.classList.remove('open');gear.setAttribute('aria-expanded','false');}});
+  }
+  function markActive(group,attr,val){
+    document.querySelectorAll('.ui-row[data-group="'+group+'"] button').forEach(function(btn){
+      btn.classList.toggle('active', btn.getAttribute(attr)===val);
+    });
+  }
+  var curTheme=lsGet('ui:theme')||'sepia';
+  markActive('theme','data-theme-val',curTheme);
+  document.querySelectorAll('[data-theme-val]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var v=btn.getAttribute('data-theme-val');
+      if(v==='oscuro')doc.removeAttribute('data-theme');else doc.setAttribute('data-theme',v);
+      lsSet('ui:theme',v); markActive('theme','data-theme-val',v);
+    });
+  });
+  var curFs=lsGet('ui:fontscale')||'1';
+  doc.style.setProperty('--font-scale',curFs);
+  markActive('fs','data-fs',curFs);
+  document.querySelectorAll('[data-fs]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var v=btn.getAttribute('data-fs');
+      doc.style.setProperty('--font-scale',v); lsSet('ui:fontscale',v); markActive('fs','data-fs',v);
+    });
+  });
+
+  var bar=document.querySelector('.read-progress > i'), ticking=false;
+  function updBar(){
+    var h=document.documentElement, max=h.scrollHeight-h.clientHeight;
+    var y=h.scrollTop||window.pageYOffset||0;
+    var pct=max>0?(y/max*100):0;
+    if(bar)bar.style.width=Math.min(100,Math.max(0,pct))+'%';
+    ticking=false;
+  }
+  window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(updBar);}},{passive:true});
+  window.addEventListener('resize',updBar); updBar();
+
+  var sub=document.querySelector('.chapter-subtitle');
+  if(sub&&!document.querySelector('.chapter-meta')){
+    var words=document.querySelectorAll('.prose .w, .chapter-title .w').length||0;
+    var mins=Math.max(1,Math.round(words/200));
+    var pe=document.querySelector('.audio-pill');
+    var dur=pe?pe.getAttribute('data-duration'):'';
+    var meta=document.createElement('p'); meta.className='chapter-meta';
+    meta.textContent='Lectura ≈ '+mins+' min'+(dur&&dur!=='0:00'?'  ·  audio '+dur:'');
+    sub.parentNode.insertBefore(meta, sub.nextSibling);
+  }
+
+  var pillEl=document.querySelector('.audio-pill');
+  var sk=pillEl?(pillEl.getAttribute('data-storage-key')||'default'):'default';
+  var SKEY='ui:scroll:'+sk, sticking=false;
+  function saveScroll(){var y=window.pageYOffset||document.documentElement.scrollTop||0;lsSet(SKEY,String(Math.round(y)));}
+  window.addEventListener('scroll',function(){if(!sticking){sticking=true;setTimeout(function(){saveScroll();sticking=false;},800);}},{passive:true});
+  window.addEventListener('beforeunload',saveScroll);
+  var savedY=parseInt(lsGet(SKEY)||'0',10);
+  if(savedY>600 && savedY<(document.documentElement.scrollHeight-window.innerHeight-200)){
+    var rr=document.createElement('button'); rr.className='resume-read';
+    rr.innerHTML='↓ Continuar donde ibas';
+    rr.addEventListener('click',function(){window.scrollTo({top:savedY,behavior:'smooth'});rr.classList.remove('show');});
+    document.body.appendChild(rr);
+    setTimeout(function(){rr.classList.add('show');},500);
+    setTimeout(function(){rr.classList.remove('show');},9000);
+  }
+
+  var audio=document.querySelector('.ap-audio');
+  var nextLink=document.querySelector('.nav-foot a.next');
+  if(audio&&nextLink){
+    var card=document.createElement('div'); card.className='next-card';
+    card.innerHTML='<div class="nc-label">Siguiente capítulo</div>'+
+      '<div class="nc-title"></div>'+
+      '<div class="nc-actions"><button class="nc-dismiss">Ahora no</button>'+
+      '<a class="nc-go">Reproducir →</a></div>';
+    card.querySelector('.nc-title').textContent=nextLink.textContent;
+    card.querySelector('.nc-go').setAttribute('href', nextLink.getAttribute('href')+'?autoplay=1');
+    document.body.appendChild(card);
+    audio.addEventListener('ended',function(){card.classList.add('show');});
+    card.querySelector('.nc-dismiss').addEventListener('click',function(){card.classList.remove('show');});
+  }
+  if(audio && /[?&]autoplay=1/.test(location.search)){
+    var go=function(){var p=audio.play();if(p&&p.catch)p.catch(function(){});};
+    if(audio.readyState>=2)go(); else audio.addEventListener('loadedmetadata',go,{once:true});
+  }
+})();
+</script>
+</body>
+</html>

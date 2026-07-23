@@ -21,6 +21,7 @@ Variables de entorno:
 import base64
 import json
 import os
+import re
 import subprocess
 import sys
 import urllib.error
@@ -194,7 +195,15 @@ def main():
         ffmpeg_normalize(raw, nrm)
         dur = ffprobe_duration(nrm)
         pieces.append(nrm)
+        # Descartar «palabras» que son solo puntuación (— · «» «…» etc.).
+        # ElevenLabs las devuelve como items del alignment aunque no llevan
+        # ninguna letra, y inject_word_spans (que envuelve con \w+) no las
+        # detecta en el HTML, generando un desfase artificial. Fix del
+        # pipeline: si el token no contiene ningún carácter alfabético o
+        # numérico, se salta.
         for w in words:
+            if not re.search(r'\w', w["text"]):
+                continue
             all_words.append({
                 "i": len(all_words),
                 "t": w["text"],
