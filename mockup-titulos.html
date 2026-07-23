@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<script>(function(){try{var d=document.documentElement;var t=localStorage.getItem('ui:theme')||'sepia';if(t!=='oscuro')d.setAttribute('data-theme',t);}catch(e){}})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mockup · títulos de sección</title>
+<style>
+:root {
+  --bg: #1c1c1c; --surface: #262626; --ink: #ebe9e4; --ink-soft: #9a988f;
+  --rule: #3a3a38; --verde: #FF7A18;
+  --font-body: 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia, serif;
+}
+:root[data-theme="sepia"]{ --bg:#f3ead6; --surface:#e9dcc0; --ink:#2f2718; --ink-soft:#6e6048; --rule:#d6c9ab; }
+:root[data-theme="claro"]{ --bg:#fbf9f5; --surface:#eeeae3; --ink:#1a1916; --ink-soft:#5d584f; --rule:#e2ddd3; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 19px; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); line-height: 1.7; }
+.page { max-width: 720px; margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+.cover { text-align: center; margin-bottom: 3rem; }
+.cover .kicker { font-size: 0.78rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--verde); margin-bottom: 1rem; }
+.cover h1 { font-size: 2rem; font-weight: 400; margin-bottom: 0.6rem; }
+.cover p { color: var(--ink-soft); font-style: italic; font-size: 0.98rem; }
+
+.variante {
+  margin: 4rem 0;
+  padding: 2.5rem 2rem;
+  background: var(--surface);
+  border-radius: 12px;
+  border: 1px solid var(--rule);
+}
+.variante-tag {
+  display: inline-block;
+  font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--verde);
+  padding: 0.3rem 0.8rem; border: 1px solid var(--verde); border-radius: 4px;
+  margin-bottom: 2rem;
+}
+.variante p { font-size: 1rem; color: var(--ink); margin-bottom: 1rem; }
+.variante p.faded { color: var(--ink-soft); font-style: italic; }
+.variante-desc {
+  font-size: 0.88rem; color: var(--ink-soft); font-style: italic;
+  margin: -1rem 0 2rem;
+}
+
+/* ============ VARIANTE A ============
+   Actual (referencia). Subrayado sobrio. */
+.va h2 {
+  font-family: var(--font-body); font-weight: 400;
+  font-size: 1.15rem; letter-spacing: 0.02em; color: var(--ink);
+  margin: 2.2rem 0 0.9rem;
+  padding-bottom: 0.5rem; border-bottom: 1px solid var(--rule);
+}
+
+/* ============ VARIANTE B ============
+   Número prominente en naranja + título grande. */
+.vb { counter-reset: sec-b; }
+.vb h2 {
+  counter-increment: sec-b;
+  position: relative;
+  padding-left: 3.2rem;
+  margin: 2.8rem 0 1.2rem;
+  font-family: var(--font-body); font-weight: 400;
+  font-size: 1.55rem; line-height: 1.25; letter-spacing: -0.008em;
+  color: var(--ink); border: none;
+}
+.vb h2::before {
+  content: counter(sec-b, decimal-leading-zero);
+  position: absolute; left: 0; top: 0.4em;
+  font-size: 0.78rem; letter-spacing: 0.15em;
+  color: var(--verde); font-variant-numeric: tabular-nums;
+  padding-top: 0.25rem; border-top: 1.5px solid var(--verde);
+  padding-right: 1rem;
+}
+
+/* ============ VARIANTE C ============
+   Kicker pequeño «Sección N» arriba + título editorial grande. */
+.vc { counter-reset: sec-c; }
+.vc h2 {
+  counter-increment: sec-c;
+  font-family: var(--font-body); font-weight: 400;
+  font-size: 1.7rem; line-height: 1.2; letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 2.5rem 0 1.2rem;
+  padding: 0; border: none;
+}
+.vc h2::before {
+  content: "Sección " counter(sec-c);
+  display: block;
+  font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--verde); margin-bottom: 0.55rem;
+  font-family: var(--font-body); font-style: normal;
+}
+
+/* ============ VARIANTE D ============
+   Barra vertical naranja + título con más aire. */
+.vd h2 {
+  font-family: var(--font-body); font-weight: 400;
+  font-size: 1.5rem; line-height: 1.3; letter-spacing: -0.005em;
+  color: var(--ink);
+  border-left: 3px solid var(--verde);
+  padding: 0.15rem 0 0.15rem 1rem;
+  margin: 2.6rem 0 1.2rem;
+  border-bottom: none;
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <header class="cover">
+    <div class="kicker">Mockup interno · elegir variante</div>
+    <h1>Títulos de sección</h1>
+    <p>Cuatro formas de renderizar los <code>&lt;h2&gt;</code> dentro de cada capítulo. Contenido real del cap 3.</p>
+  </header>
+
+  <!-- VARIANTE A: actual -->
+  <div class="variante va">
+    <span class="variante-tag">A · Actual (referencia)</span>
+    <p class="variante-desc">Como se ve HOY en la web publicada. Serif normal, subrayado sutil. Sobrio pero se pierde entre el flujo del texto.</p>
+
+    <h2>Idea central</h2>
+    <p class="faded">Este capítulo explica por qué fallan nuestros intentos habituales de manejar la ansiedad…</p>
+    <h2>Mito 3: es fácil controlar lo que piensas y sientes</h2>
+    <p class="faded">Este mito lo sostienen casi todos los libros de autoayuda…</p>
+    <h2>La ilusión de control</h2>
+    <p class="faded">Podemos moldear el mundo externo…</p>
+    <h2>La solución es el problema</h2>
+    <p class="faded">Cuando forcejeamos con los pensamientos y sentimientos difíciles…</p>
+  </div>
+
+  <!-- VARIANTE B: número prominente -->
+  <div class="variante vb">
+    <span class="variante-tag">B · Número prominente</span>
+    <p class="variante-desc">Cada sección tiene un número «01», «02», «03»… en naranja pequeño con filete superior. El título va grande al lado. Cada sección se vuelve un «mile marker» del capítulo — sabes exactamente dónde estás.</p>
+
+    <h2>Idea central</h2>
+    <p class="faded">Este capítulo explica por qué fallan nuestros intentos habituales de manejar la ansiedad…</p>
+    <h2>Mito 3: es fácil controlar lo que piensas y sientes</h2>
+    <p class="faded">Este mito lo sostienen casi todos los libros de autoayuda…</p>
+    <h2>La ilusión de control</h2>
+    <p class="faded">Podemos moldear el mundo externo…</p>
+    <h2>La solución es el problema</h2>
+    <p class="faded">Cuando forcejeamos con los pensamientos y sentimientos difíciles…</p>
+  </div>
+
+  <!-- VARIANTE C: kicker + título editorial -->
+  <div class="variante vc">
+    <span class="variante-tag">C · Kicker + título grande</span>
+    <p class="variante-desc">Etiqueta pequeña «SECCIÓN 03» en naranja arriba + título GRANDE debajo. Formato editorial de revista. Cada tema se lee como si fuera una micro-portada. Muy memorable, un poco más de espacio vertical.</p>
+
+    <h2>Idea central</h2>
+    <p class="faded">Este capítulo explica por qué fallan nuestros intentos habituales de manejar la ansiedad…</p>
+    <h2>Mito 3: es fácil controlar lo que piensas y sientes</h2>
+    <p class="faded">Este mito lo sostienen casi todos los libros de autoayuda…</p>
+    <h2>La ilusión de control</h2>
+    <p class="faded">Podemos moldear el mundo externo…</p>
+    <h2>La solución es el problema</h2>
+    <p class="faded">Cuando forcejeamos con los pensamientos y sentimientos difíciles…</p>
+  </div>
+
+  <!-- VARIANTE D: barra lateral -->
+  <div class="variante vd">
+    <span class="variante-tag">D · Barra lateral naranja</span>
+    <p class="variante-desc">Filete vertical naranja a la izquierda del título. Sencillo, elegante, se mantiene ligero pero cada sección tiene una marca clara. Muy usado en libros de no-ficción moderna.</p>
+
+    <h2>Idea central</h2>
+    <p class="faded">Este capítulo explica por qué fallan nuestros intentos habituales de manejar la ansiedad…</p>
+    <h2>Mito 3: es fácil controlar lo que piensas y sientes</h2>
+    <p class="faded">Este mito lo sostienen casi todos los libros de autoayuda…</p>
+    <h2>La ilusión de control</h2>
+    <p class="faded">Podemos moldear el mundo externo…</p>
+    <h2>La solución es el problema</h2>
+    <p class="faded">Cuando forcejeamos con los pensamientos y sentimientos difíciles…</p>
+  </div>
+</div>
+</body>
+</html>
